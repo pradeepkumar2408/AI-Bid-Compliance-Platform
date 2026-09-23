@@ -1,0 +1,116 @@
+package com.gem.procurement.rules;
+
+import com.gem.procurement.rules.ComplianceRuleFact;
+import java.math.BigDecimal;
+
+rule "Financial Turnover Verification"
+    dialect "java"
+    salience 100
+    when
+        $fact: ComplianceRuleFact(turnover != null, minTurnover != null)
+    then
+        if ($fact.getTurnover().compareTo($fact.getMinTurnover()) >= 0) {
+            $fact.addResult("RULE_TURNOVER_PASS", "Annual Turnover Requirement", "FINANCIAL", true,
+                "Annual Turnover INR " + $fact.getTurnover() + " meets or exceeds required INR " + $fact.getMinTurnover(), 25.0, true);
+        } else {
+            $fact.addResult("RULE_TURNOVER_FAIL", "Annual Turnover Requirement", "FINANCIAL", false,
+                "Annual Turnover INR " + $fact.getTurnover() + " is below minimum required INR " + $fact.getMinTurnover(), -25.0, true);
+        }
+end
+
+rule "Experience Years Verification"
+    dialect "java"
+    salience 90
+    when
+        $fact: ComplianceRuleFact(experienceYears != null, minExperienceYears != null)
+    then
+        if ($fact.getExperienceYears().compareTo($fact.getMinExperienceYears()) >= 0) {
+            $fact.addResult("RULE_EXP_PASS", "Past Experience Requirement", "TECHNICAL", true,
+                "Experience of " + $fact.getExperienceYears() + " years meets or exceeds required " + $fact.getMinExperienceYears() + " years", 20.0, true);
+        } else {
+            $fact.addResult("RULE_EXP_FAIL", "Past Experience Requirement", "TECHNICAL", false,
+                "Experience of " + $fact.getExperienceYears() + " years is below minimum required " + $fact.getMinExperienceYears() + " years", -20.0, true);
+        }
+end
+
+rule "Certifications Verification"
+    dialect "java"
+    salience 80
+    when
+        $fact: ComplianceRuleFact(requiredCerts != null && !requiredCerts.isEmpty())
+    then
+        boolean allMatched = true;
+        for (String reqCert : $fact.getRequiredCerts()) {
+            if (!$fact.getBidderCerts().contains(reqCert)) {
+                allMatched = false;
+                break;
+            }
+        }
+        if (allMatched) {
+            $fact.addResult("RULE_CERT_PASS", "Mandatory Certifications", "TECHNICAL", true,
+                "All required certifications verified: " + $fact.getRequiredCerts(), 15.0, true);
+        } else {
+            $fact.addResult("RULE_CERT_FAIL", "Mandatory Certifications", "TECHNICAL", false,
+                "Missing required certifications. Found: " + $fact.getBidderCerts() + ", Required: " + $fact.getRequiredCerts(), -15.0, false);
+        }
+end
+
+rule "Debarment / Blacklist Check"
+    dialect "java"
+    salience 120
+    when
+        $fact: ComplianceRuleFact(isDebarred != null)
+    then
+        if ($fact.getIsDebarred()) {
+            $fact.addResult("RULE_BLACKLIST_FAIL", "Debarment / Blacklist Check", "IDENTITY", false,
+                "Bidder is listed on GeM/CVC Debarred Vendor Registry (Debarred status active).", -50.0, true);
+        } else {
+            $fact.addResult("RULE_BLACKLIST_PASS", "Debarment / Blacklist Check", "IDENTITY", true,
+                "Bidder clear from all central debarment and blacklist registries.", 10.0, true);
+        }
+end
+
+rule "Identity & GST Active Check"
+    dialect "java"
+    salience 110
+    when
+        $fact: ComplianceRuleFact(panValid != null, gstActive != null)
+    then
+        if (Boolean.TRUE.equals($fact.getPanValid()) && Boolean.TRUE.equals($fact.getGstActive()) && Boolean.TRUE.equals($fact.getNameMatched())) {
+            $fact.addResult("RULE_IDENTITY_PASS", "Government Identity Verification", "IDENTITY", true,
+                "PAN format verified with NSDL/ITD and GSTIN active on GSTN portal without name mismatch.", 15.0, true);
+        } else {
+            $fact.addResult("RULE_IDENTITY_FAIL", "Government Identity Verification", "IDENTITY", false,
+                "Government Identity Discrepancy: PAN/GST inactive or name mismatch across records.", -20.0, true);
+        }
+end
+
+rule "Tamper & Forgery ELA Verification"
+    dialect "java"
+    salience 105
+    when
+        $fact: ComplianceRuleFact(isTampered != null)
+    then
+        if (Boolean.TRUE.equals($fact.getIsTampered())) {
+            $fact.addResult("RULE_FORGERY_FAIL", "Document Authenticity & Tamper Check", "INTEGRITY", false,
+                "Error Level Analysis (ELA) detected digital manipulation or font alterations in submitted documents (Score: " + $fact.getTamperScore() + ")", -40.0, true);
+        } else {
+            $fact.addResult("RULE_FORGERY_PASS", "Document Authenticity & Tamper Check", "INTEGRITY", true,
+                "Error Level Analysis confirmed digital compression consistency across documents.", 10.0, true);
+        }
+end
+
+rule "Cross-Bidder Duplicate Certificate Check"
+    dialect "java"
+    salience 102
+    when
+        $fact: ComplianceRuleFact(isDuplicate != null)
+    then
+        if (Boolean.TRUE.equals($fact.getIsDuplicate())) {
+            $fact.addResult("RULE_DUPLICATE_FAIL", "Cross-Bidder Document Collusion Check", "INTEGRITY", false,
+                "Identical certificate hash detected across different bidder submissions (Collusion Alert).", -30.0, true);
+        } else {
+            $fact.addResult("RULE_DUPLICATE_PASS", "Cross-Bidder Document Collusion Check", "INTEGRITY", true,
+                "Unique document hash verified across all historical and current bid submissions.", 5.0, true);
+        }
+end

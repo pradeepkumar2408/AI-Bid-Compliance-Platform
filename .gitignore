@@ -1,0 +1,68 @@
+# ==========================================
+# GeM Procurement & Compliance - .gitignore
+# ==========================================
+
+# 1. Frontend (Node / Vite / React)
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# 2. Backend (Java / Spring Boot / Maven)
+backend/target/
+backend/.tools/
+backend/uploads/
+backend/*.log
+backend/.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+*.ear
+
+# 3. AI Microservice (Python / FastAPI / PyTorch)
+ai-service/venv/
+ai-service/env/
+ai-service/.venv/
+ai-service/storage/
+ai-service/__pycache__/
+ai-service/**/__pycache__/
+*.py[cod]
+*$py.class
+ai-service/.pytest_cache/
+ai-service/.coverage
+ai-service/htmlcov/
+
+# 4. Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+*.jks
+
+# 5. IDE & Operating System Files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# 6. Global Logs & Temporary Uploads
+logs/
+*.log
+uploads/
+tmp/
+temp/

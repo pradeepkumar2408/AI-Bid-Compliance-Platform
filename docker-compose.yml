@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Oracle Database 21c Express Edition
+  oracle-db:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: gem-oracle-db
+    environment:
+      - ORACLE_PWD=gem_password_2026
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Python FastAPI AI/ML Microservice
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: gem-ai-microservice
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+    restart: always
+
+  # Spring Boot 3 Core Backend with Embedded Drools
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gem-backend-core
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - AI_SERVICE_URL=http://ai-service:8000
+    depends_on:
+      - ai-service
+    restart: always
+
+  # React Frontend (Vite)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gem-react-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  oracle_data:

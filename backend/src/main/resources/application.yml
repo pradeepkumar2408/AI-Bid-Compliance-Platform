@@ -1,0 +1,92 @@
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /
+
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:mysql}
+  application:
+    name: gem-procurement-compliance
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 50MB
+
+  # MySQL Database Configuration
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/gem_procurement_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:com.mysql.cj.jdbc.Driver}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+  jpa:
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.MySQLDialect}
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.MySQLDialect}
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+# AI Microservice Integration Endpoint
+ai-service:
+  url: ${AI_SERVICE_URL:http://localhost:8000}
+  timeout-seconds: 30
+
+# File Storage Path
+storage:
+  local-dir: ${STORAGE_LOCAL_DIR:./uploads}
+
+# JWT Security Configuration
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24 hours
+
+---
+# H2 In-Memory Fallback Profile (activate with SPRING_PROFILES_ACTIVE=h2)
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:gemdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+---
+# Oracle Database Profile (activate with SPRING_PROFILES_ACTIVE=oracle)
+spring:
+  config:
+    activate:
+      on-profile: oracle
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:oracle:thin:@//localhost:1521/XE}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:oracle.jdbc.OracleDriver}
+    username: ${SPRING_DATASOURCE_USERNAME:system}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    hikari:
+      connection-test-query: SELECT 1 FROM DUAL
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
