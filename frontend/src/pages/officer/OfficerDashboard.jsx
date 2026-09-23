@@ -10,50 +10,50 @@ export const TENDER_DOCUMENT_OPTIONS = [
   {
     key: 'PAN_CARD',
     num: '1',
-    label: '1. PAN Card of Business / Entity',
-    desc: 'Permanent Account Number matching registered corporate/firm name',
+    label: 'PAN Card',
+    desc: 'Valid business PAN card matching entity name',
     defaultChecked: true
   },
   {
     key: 'GST_CERTIFICATE',
     num: '2',
-    label: '2. GST Registration Certificate (REG-06)',
-    desc: 'Form GST REG-06 showing principal place of business & active GSTIN',
+    label: 'GST Certificate (REG-06)',
+    desc: 'Active GST registration certificate with 15-digit GSTIN',
     defaultChecked: true
   },
   {
     key: 'COMPANY_REGISTRATION',
     num: '3',
-    label: '3. Company Registration (CIN / MCA / Udyam MSME)',
-    desc: 'MCA Certificate of Incorporation (COI), Udyam MSME, or Partnership Deed',
+    label: 'Company Registration',
+    desc: 'MCA Certificate of Incorporation, Udyam MSME, or Deed',
     defaultChecked: true
   },
   {
     key: 'EXPERIENCE_CERTIFICATES',
     num: '4',
-    label: '4. Experience & Performance Certificates',
-    desc: 'Past client purchase/work orders and satisfactory completion letters',
+    label: 'Experience Certificates',
+    desc: 'Past client work orders and satisfactory completion letters',
     defaultChecked: true
   },
   {
     key: 'FINANCIAL_DOCUMENTS',
     num: '5',
-    label: '5. Financial Documents (Turnover & Balance Sheet)',
-    desc: 'CA Turnover Certificate featuring 18-digit UDIN and audited Balance Sheet',
+    label: 'Financial Turnover Documents',
+    desc: 'Audited Balance Sheet or CA Turnover Certificate with UDIN',
     defaultChecked: true
   },
   {
     key: 'ISO_COMPLIANCE',
     num: '6',
-    label: '6. ISO / Quality & Statutory Compliance Certificates',
-    desc: 'ISO 9001 / ISO 27001 / CMMI / Quality certifications',
+    label: 'ISO / Quality Certifications',
+    desc: 'ISO 9001, ISO 27001, or CMMI certifications',
     defaultChecked: false
   },
   {
     key: 'TECHNICAL_PROPOSAL',
     num: '7',
-    label: '7. Technical Proposal & Compliance Matrix',
-    desc: 'Technical methodology, specification matrix, and clause-by-clause compliance',
+    label: 'Technical Proposal & Matrix',
+    desc: 'Technical methodology and clause-by-clause compliance',
     defaultChecked: false
   }
 ];

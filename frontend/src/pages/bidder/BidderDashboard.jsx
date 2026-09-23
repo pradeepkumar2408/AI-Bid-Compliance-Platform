@@ -17,93 +17,93 @@ export const REQUIRED_DOCUMENTS = [
   {
     id: 1,
     key: 'PAN_CARD',
-    title: '1. PAN Card',
-    subtitle: 'Permanent Account Number (Structured Tax ID)',
+    title: 'PAN Card',
+    subtitle: 'Permanent Account Number',
     mandatory: true,
-    type: 'Structured (API & Registry Validated)',
+    type: 'Structured Tax ID',
     icon: FileText,
     badgeColor: '#0284c7',
-    purpose: 'Mandatory business tax identifier. Verified for legal format, 4th character entity type, and master registry status.',
+    purpose: 'Valid business PAN card matching registered entity name.',
     acceptedExt: '.pdf,.png,.jpg,.jpeg',
-    hint: 'Upload high-resolution scan of business PAN card matching registered entity.'
+    hint: 'Upload business PAN card.'
   },
   {
     id: 2,
     key: 'GST_CERTIFICATE',
-    title: '2. GST Certificate',
-    subtitle: 'Form GST REG-06 Registration Certificate',
+    title: 'GST Certificate',
+    subtitle: 'Form GST REG-06',
     mandatory: true,
-    type: 'Structured (API & Cross-Linked)',
+    type: 'GST Registration',
     icon: ShieldCheck,
     badgeColor: '#059669',
-    purpose: 'Mandatory tax registration certificate. Cross-checked with embedded PAN and state jurisdiction.',
+    purpose: 'Active GST registration certificate with 15-digit GSTIN.',
     acceptedExt: '.pdf,.png,.jpg,.jpeg',
-    hint: 'Official Form GST REG-06 certificate with active 15-digit GSTIN.'
+    hint: 'Upload GST REG-06 certificate.'
   },
   {
     id: 3,
     key: 'COMPANY_REGISTRATION',
-    title: '3. Company Registration Certificate',
-    subtitle: 'MCA Incorporation (CIN) / Udyam MSME / Partnership Deed',
+    title: 'Company Registration',
+    subtitle: 'Incorporation / MSME / Deed',
     mandatory: true,
-    type: 'Unstructured (AI OCR + NLP Extraction)',
+    type: 'Entity Registration',
     icon: Building,
     badgeColor: '#7c3aed',
-    purpose: 'Establishes legal entity existence, 21-digit CIN or Udyam number, and incorporation timeline.',
+    purpose: 'Certificate of Incorporation (CIN), Udyam MSME, or Partnership Deed.',
     acceptedExt: '.pdf,.png,.jpg,.jpeg',
-    hint: 'MCA Certificate of Incorporation (COI), Udyam MSME registration, or Partnership Deed.'
+    hint: 'Upload incorporation or MSME certificate.'
   },
   {
     id: 4,
     key: 'EXPERIENCE_CERTIFICATES',
-    title: '4. Experience Certificates',
-    subtitle: 'Past Work Orders & Client Satisfactory Completion Proof',
+    title: 'Experience Certificates',
+    subtitle: 'Past Work Orders & Proof',
     mandatory: true,
-    type: 'Unstructured (AI OCR + NLP Extraction)',
+    type: 'Work Experience',
     icon: Briefcase,
     badgeColor: '#d97706',
-    purpose: 'Substantiates technical capacity, similar nature project execution, and client performance satisfaction.',
+    purpose: 'Work orders or project completion certificates from clients.',
     acceptedExt: '.pdf,.png,.jpg,.jpeg',
-    hint: 'Government / PSU / Corporate client work orders with completion certificates.'
+    hint: 'Upload past work orders & completion certificates.'
   },
   {
     id: 5,
     key: 'FINANCIAL_DOCUMENTS',
-    title: '5. Financial Documents',
-    subtitle: 'CA Turnover Certificate with 18-digit UDIN & Balance Sheet',
+    title: 'Financial Turnover',
+    subtitle: 'CA Certificate with UDIN',
     mandatory: true,
-    type: 'Unstructured (AI OCR + NLP Extraction)',
+    type: 'Financial Proof',
     icon: DollarSign,
     badgeColor: '#0891b2',
-    purpose: 'Proof of annual financial turnover and net worth. CA certificate must feature a verifiable 18-digit UDIN.',
+    purpose: 'Audited financial balance sheet or CA turnover certificate with UDIN.',
     acceptedExt: '.pdf,.png,.jpg,.jpeg',
-    hint: 'CA-certified annual turnover certificate with 18-digit UDIN & audited Balance Sheet / P&L.'
+    hint: 'Upload CA Turnover certificate or Balance Sheet.'
   },
   {
     id: 6,
     key: 'ISO_COMPLIANCE',
-    title: '6. ISO / Compliance Certificates',
-    subtitle: 'ISO 9001 / 27001 / CMMI / Quality & Statutory Certs',
+    title: 'ISO / Quality Certs',
+    subtitle: 'Quality & Compliance Certs',
     mandatory: false,
-    type: 'Unstructured (AI OCR + NLP Extraction)',
+    type: 'Quality Certifications',
     icon: Shield,
     badgeColor: '#4f46e5',
-    purpose: 'Quality management, information security, and statutory compliance certifications.',
+    purpose: 'ISO 9001, ISO 27001, CMMI, or relevant quality certifications.',
     acceptedExt: '.pdf,.png,.jpg,.jpeg',
-    hint: 'Valid ISO 9001:2015, ISO 27001, CMMI Level 3/5, or relevant BIS certifications.'
+    hint: 'Upload ISO or quality certificates.'
   },
   {
     id: 7,
     key: 'TECHNICAL_PROPOSAL',
-    title: '7. Technical Proposal Documents',
-    subtitle: 'Technical Specifications & Compliance Matrix',
+    title: 'Technical Proposal',
+    subtitle: 'Technical Compliance Matrix',
     mandatory: false,
-    type: 'Unstructured (AI OCR + NLP Extraction)',
+    type: 'Technical Bid',
     icon: Layers,
     badgeColor: '#6366f1',
-    purpose: 'Comprehensive technical methodology, BOM specifications, SLA terms, and compliance matrix.',
+    purpose: 'Detailed technical bid proposal and specification compliance.',
     acceptedExt: '.pdf,.png,.jpg,.jpeg',
-    hint: 'Detailed technical bid proposal with clause-by-clause compliance.'
+    hint: 'Upload technical proposal document.'
   }
 ];
 
@@ -313,14 +313,14 @@ export const BidderDashboard = ({ user }) => {
               id: 100 + index,
               key: item,
               title: item.replace(/_/g, ' '),
-              subtitle: 'Custom Statutory Requirement (Specified by Officer)',
+              subtitle: 'Officer Specified Document',
               mandatory: true,
-              type: 'Custom Document (AI OCR & Integrity Check)',
+              type: 'Custom Document',
               icon: FileText,
               badgeColor: '#0284c7',
-              purpose: 'Specific document required by the tender evaluation officer.',
+              purpose: 'Document specified by the evaluation officer for this tender.',
               acceptedExt: '.pdf,.png,.jpg,.jpeg',
-              hint: 'Upload the requested statutory document in PDF or Image format.',
+              hint: 'Upload the requested document in PDF or Image format.',
               isCustom: true
             });
           }
@@ -336,12 +336,12 @@ export const BidderDashboard = ({ user }) => {
               id: 200 + index,
               key: item.key || `CUSTOM_${index}`,
               title: item.title || item.label || 'Custom Document',
-              subtitle: item.subtitle || 'Custom Statutory Requirement (Specified by Officer)',
+              subtitle: item.subtitle || 'Officer Specified Document',
               mandatory: item.mandatory !== false,
-              type: 'Custom Document (AI OCR & Integrity Analysis)',
+              type: 'Custom Document',
               icon: FileText,
               badgeColor: '#0284c7',
-              purpose: item.desc || 'Specific statutory document required by the procuring officer for this tender.',
+              purpose: item.desc || 'Document specified by the evaluation officer.',
               acceptedExt: '.pdf,.png,.jpg,.jpeg',
               hint: 'Upload clear scan/copy of the requested document.',
               isCustom: true
@@ -428,14 +428,14 @@ export const BidderDashboard = ({ user }) => {
   return (
     <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '24px 20px', minHeight: '90vh' }}>
       
-      {/* 1. Header Banner */}
+      {/* 1. Clean Header Banner */}
       <div style={{
         background: 'linear-gradient(135deg, #072a44 0%, #0a3d62 50%, #1e6091 100%)',
         color: 'white',
-        borderRadius: '12px',
-        padding: '24px 28px',
-        marginBottom: '24px',
-        boxShadow: '0 10px 25px -5px rgba(10, 61, 98, 0.3)',
+        borderRadius: 'var(--radius-lg)',
+        padding: '22px 28px',
+        marginBottom: '20px',
+        boxShadow: '0 10px 25px -5px rgba(10, 61, 98, 0.25)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -443,20 +443,17 @@ export const BidderDashboard = ({ user }) => {
         gap: '16px'
       }}>
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.15)', fontSize: '12px', fontWeight: '700', marginBottom: '8px' }}>
-            <Cpu size={14} /> AI-Powered Bid Verification & Authenticity System
-          </div>
-          <h1 style={{ fontSize: '24px', fontWeight: '800', margin: 0, letterSpacing: '-0.02em' }}>
-            GeM Procurement Verification Center
+          <h1 style={{ fontSize: '22px', fontWeight: '800', margin: 0, letterSpacing: '-0.01em' }}>
+            Bid Submission & Verification Center
           </h1>
-          <p style={{ margin: '6px 0 0 0', opacity: 0.9, fontSize: '13.5px', maxWidth: '750px' }}>
-            Centralized document requirement validation, structured tax verification, OCR+NLP entity extraction, cross-verification, and tamper detection.
+          <p style={{ margin: '4px 0 0 0', opacity: 0.9, fontSize: '13px', color: '#e2e8f0' }}>
+            Select a target tender, review statutory requirements, and upload required compliance certificates.
           </p>
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <div style={{ textAlign: 'right', background: 'rgba(0,0,0,0.2)', padding: '10px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.8 }}>Mandatory Attached</div>
+          <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.12)', padding: '8px 18px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}>
+            <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.85, fontWeight: '600' }}>Mandatory Attached</div>
             <div style={{ fontSize: '20px', fontWeight: '800', color: mandatoryUploaded >= mandatoryCount ? '#86efac' : '#fde047' }}>
               {mandatoryUploaded} / {mandatoryCount}
             </div>
@@ -467,9 +464,9 @@ export const BidderDashboard = ({ user }) => {
       {notification && (
         <div style={{
           padding: '12px 18px',
-          borderRadius: '8px',
+          borderRadius: 'var(--radius-md)',
           marginBottom: '20px',
-          fontSize: '14px',
+          fontSize: '13.5px',
           fontWeight: '600',
           backgroundColor: notification.startsWith('✅') ? '#f0fdf4' : '#fef2f2',
           border: `1px solid ${notification.startsWith('✅') ? '#86efac' : '#fca5a5'}`,
@@ -483,7 +480,7 @@ export const BidderDashboard = ({ user }) => {
         </div>
       )}
 
-      {/* 2. Top Grid: Credentials & Selected Procurement Tender */}
+      {/* 2. Top Grid: Target Procurement Tender & Statutory Bidder Inputs */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
@@ -491,7 +488,7 @@ export const BidderDashboard = ({ user }) => {
         marginBottom: '24px'
       }}>
         {/* Selected Tender Selector */}
-        <div style={{ background: 'white', padding: '20px', borderRadius: '10px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <div className="gem-card hover-elevate" style={{ padding: '20px', marginBottom: 0 }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>
             <Building size={16} color="#0a3d62" /> Target Procurement Tender
           </label>
@@ -502,7 +499,7 @@ export const BidderDashboard = ({ user }) => {
               setSelectedTenderId(e.target.value);
               setVerificationReport(null);
             }}
-            style={{ width: '100%', padding: '10px 12px', fontSize: '13.5px', fontWeight: '600' }}
+            style={{ width: '100%', padding: '9px 12px', fontSize: '13.5px', fontWeight: '600' }}
           >
             {tenders.map(t => (
               <option key={t.id} value={t.id}>
@@ -512,33 +509,33 @@ export const BidderDashboard = ({ user }) => {
           </select>
 
           {selectedTender && (
-            <div style={{ marginTop: '12px', padding: '10px', background: '#f8fafc', borderRadius: '6px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', color: '#475569' }}>
-              <span><b>Min Turnover:</b> ₹{Number(selectedTender.minTurnover || 0).toLocaleString('en-IN')}</span>
-              <span><b>Min Experience:</b> {selectedTender.minExperienceYears || 0} Years</span>
+            <div style={{ marginTop: '12px', padding: '10px 12px', background: '#f8fafc', borderRadius: 'var(--radius-sm)', fontSize: '12px', display: 'flex', justifyContent: 'space-between', color: '#475569', border: '1px solid #f1f5f9' }}>
+              <span><b>Turnover:</b> ₹{Number(selectedTender.minTurnover || 0).toLocaleString('en-IN')}</span>
+              <span><b>Experience:</b> {selectedTender.minExperienceYears || 0} Years</span>
               <span><b>Category:</b> {selectedTender.category || 'Goods & Services'}</span>
             </div>
           )}
         </div>
 
         {/* Statutory Bidder Inputs */}
-        <div style={{ background: 'white', padding: '20px', borderRadius: '10px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <div className="gem-card hover-elevate" style={{ padding: '20px', marginBottom: 0 }}>
           <div style={{ fontSize: '13px', fontWeight: '700', color: '#0f172a', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <FileText size={16} color="#0a3d62" /> Statutory Bidder Inputs
+            <FileText size={16} color="#0a3d62" /> Bidder Credentials
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             <div>
-              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Legal Bidder Name</label>
+              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Legal Name</label>
               <input
                 type="text"
                 className="form-input"
                 style={{ padding: '6px 10px', fontSize: '12.5px' }}
                 value={bidderName}
                 onChange={(e) => setBidderName(e.target.value)}
-                placeholder="e.g. Amazon Seller Services"
+                placeholder="Amazon"
               />
             </div>
             <div>
-              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Company PAN (10 chars)</label>
+              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Company PAN</label>
               <input
                 type="text"
                 className="form-input"
@@ -549,7 +546,7 @@ export const BidderDashboard = ({ user }) => {
               />
             </div>
             <div>
-              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>GSTIN (15 chars)</label>
+              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>GSTIN</label>
               <input
                 type="text"
                 className="form-input"
@@ -560,36 +557,34 @@ export const BidderDashboard = ({ user }) => {
               />
             </div>
             <div>
-              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Declared Turnover (INR)</label>
+              <label style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Declared Turnover (₹)</label>
               <input
                 type="number"
                 className="form-input"
                 style={{ padding: '6px 10px', fontSize: '12.5px' }}
                 value={declaredTurnover}
                 onChange={(e) => setDeclaredTurnover(e.target.value)}
-                placeholder="e.g. 250000000"
+                placeholder="250000000"
               />
             </div>
           </div>
         </div>
       </div>
 
-      {/* 3. Main Workspace: Dynamic Document Upload Slots configured by Officer */}
+      {/* 3. Main Workspace: Clean Dynamic Document Upload Grid */}
       <div style={{ marginBottom: '28px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#0f172a', margin: 0 }}>
-                1. Statutory Tender Documents Upload Center ({displayedDocuments.length} Slots Required)
+              <h2 style={{ fontSize: '17px', fontWeight: '800', color: '#0f172a', margin: 0 }}>
+                Required Tender Documents
               </h2>
-              {selectedTender && (
-                <span style={{ fontSize: '11px', background: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: '12px', fontWeight: '700' }}>
-                  Tender Requirements Filter Active
-                </span>
-              )}
+              <span style={{ fontSize: '11px', background: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: '12px', fontWeight: '700' }}>
+                {displayedDocuments.length} Documents
+              </span>
             </div>
-            <p style={{ fontSize: '13px', color: '#64748b', margin: '2px 0 0 0' }}>
-              Upload the statutory certificates requested by the Evaluation Officer for <b>{selectedTender?.tenderNumber || 'this tender'}</b> for automated OCR, entity extraction, and authenticity analysis.
+            <p style={{ fontSize: '12.5px', color: '#64748b', margin: '2px 0 0 0' }}>
+              Upload valid PDF or image certificates for <b>{selectedTender?.tenderNumber || 'the selected tender'}</b>.
             </p>
           </div>
 
@@ -598,17 +593,17 @@ export const BidderDashboard = ({ user }) => {
             onClick={() => triggerPackageVerification()}
             disabled={analyzingAll || uploadedCount === 0}
             className="btn btn-primary"
-            style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', padding: '8px 16px' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', padding: '7px 14px' }}
           >
-            <RefreshCw size={14} className={analyzingAll ? 'spin' : ''} />
-            {analyzingAll ? 'Analyzing Full Package...' : 'Re-verify All Documents'}
+            <RefreshCw size={13} className={analyzingAll ? 'spin' : ''} />
+            {analyzingAll ? 'Verifying...' : 'Re-verify All'}
           </button>
         </div>
 
         {/* Dynamic Document Cards Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '16px'
         }}>
           {displayedDocuments.map((docDef) => {
@@ -625,23 +620,19 @@ export const BidderDashboard = ({ user }) => {
             return (
               <div
                 key={docDef.key}
+                className="gem-card hover-elevate animate-fade-in-up"
                 style={{
-                  background: 'white',
-                  borderRadius: '10px',
+                  marginBottom: 0,
                   border: `1.5px solid ${isMismatch ? '#fcd34d' : isInvalid ? '#fca5a5' : isValid ? '#86efac' : '#e2e8f0'}`,
-                  padding: '18px',
+                  padding: '16px',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
-                  transition: 'all 0.2s ease',
-                  position: 'relative',
-                  overflow: 'hidden'
+                  justifyContent: 'space-between'
                 }}
               >
                 {/* Header of Doc Card */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div style={{
                         width: '36px',
@@ -654,19 +645,19 @@ export const BidderDashboard = ({ user }) => {
                         justifyContent: 'center',
                         fontWeight: '700'
                       }}>
-                        <DocIcon size={20} />
+                        <DocIcon size={18} />
                       </div>
                       <div>
-                        <div style={{ fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>
+                        <div style={{ fontSize: '13.5px', fontWeight: '700', color: '#0f172a' }}>
                           {docDef.title}
                         </div>
-                        <div style={{ fontSize: '11px', color: '#64748b' }}>
-                          {docDef.subtitle}
+                        <div style={{ fontSize: '11px', color: '#94a3b8' }}>
+                          PDF, PNG, JPG (Max 10MB)
                         </div>
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                    <div>
                       {docDef.mandatory ? (
                         <span style={{ fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '4px', background: '#fee2e2', color: '#b91c1c' }}>
                           MANDATORY
@@ -679,106 +670,91 @@ export const BidderDashboard = ({ user }) => {
                     </div>
                   </div>
 
-                  <p style={{ fontSize: '11.5px', color: '#64748b', margin: '6px 0 12px 0', lineHeight: 1.4 }}>
-                    {docDef.purpose}
-                  </p>
-
                   {/* Processing Indicator */}
                   {isProcessing && (
-                    <div style={{ padding: '10px', background: '#f0f9ff', borderRadius: '6px', border: '1px solid #bae6fd', fontSize: '12px', color: '#0369a1', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                      <RefreshCw size={14} className="spin" />
-                      <span>Extracting OCR text & classifying document...</span>
+                    <div style={{ padding: '8px 10px', background: '#f0f9ff', borderRadius: '6px', border: '1px solid #bae6fd', fontSize: '11.5px', color: '#0369a1', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <RefreshCw size={13} className="spin" />
+                      <span>Analyzing document...</span>
                     </div>
                   )}
 
                   {/* Slot Mismatch Warning (Amber/Orange) */}
                   {isMismatch && (
-                    <div style={{ padding: '10px', background: '#fffbeb', borderRadius: '6px', border: '1px solid #fcd34d', fontSize: '12px', color: '#92400e', marginBottom: '12px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', marginBottom: '4px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <AlertTriangle size={14} color="#d97706" />
-                          <span>Slot Mismatch: Detected {state.result?.category_label || state.result?.detected_category}</span>
+                    <div style={{ padding: '8px 10px', background: '#fffbeb', borderRadius: '6px', border: '1px solid #fcd34d', fontSize: '11.5px', color: '#92400e', marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', marginBottom: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <AlertTriangle size={13} color="#d97706" />
+                          <span>Mismatch: {state.result?.category_label || state.result?.detected_category}</span>
                         </div>
-                        {state.result?.confidence_score && (
-                          <span style={{ fontSize: '10.5px', padding: '1px 6px', borderRadius: '4px', background: '#fef3c7', color: '#b45309' }}>
-                            {Math.round(state.result.confidence_score * 100)}% Match
-                          </span>
-                        )}
                       </div>
-                      <p style={{ margin: 0, fontSize: '11.5px', lineHeight: 1.4 }}>{state.error || state.result?.rejection_reason}</p>
+                      <p style={{ margin: 0, fontSize: '11px', lineHeight: 1.35 }}>{state.error || state.result?.rejection_reason}</p>
                     </div>
                   )}
 
                   {/* Rejection / Error Warning (Red) */}
                   {isInvalid && !isMismatch && (
-                    <div style={{ padding: '10px', background: '#fef2f2', borderRadius: '6px', border: '1px solid #fca5a5', fontSize: '12px', color: '#991b1b', marginBottom: '12px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', marginBottom: '4px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <AlertTriangle size={14} color="#dc2626" />
-                          <span>Document Rejected: {state.result?.detected_category || 'INVALID'}</span>
+                    <div style={{ padding: '8px 10px', background: '#fef2f2', borderRadius: '6px', border: '1px solid #fca5a5', fontSize: '11.5px', color: '#991b1b', marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', marginBottom: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <AlertTriangle size={13} color="#dc2626" />
+                          <span>Rejected: {state.result?.detected_category || 'INVALID'}</span>
                         </div>
-                        {state.result?.confidence_score && (
-                          <span style={{ fontSize: '10.5px', padding: '1px 6px', borderRadius: '4px', background: '#fee2e2', color: '#b91c1c' }}>
-                            {Math.round(state.result.confidence_score * 100)}% Confidence
-                          </span>
-                        )}
                       </div>
-                      <p style={{ margin: 0, fontSize: '11.5px', lineHeight: 1.4 }}>{state.error || state.result?.rejection_reason}</p>
+                      <p style={{ margin: 0, fontSize: '11px', lineHeight: 1.35 }}>{state.error || state.result?.rejection_reason}</p>
                     </div>
                   )}
 
                   {/* Valid Extracted Metadata Pills */}
                   {isValid && (
-                    <div style={{ padding: '10px', background: '#f0fdf4', borderRadius: '6px', border: '1px solid #86efac', fontSize: '11.5px', color: '#166534', marginBottom: '12px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', marginBottom: '6px' }}>
+                    <div style={{ padding: '8px 10px', background: '#f0fdf4', borderRadius: '6px', border: '1px solid #86efac', fontSize: '11.5px', color: '#166534', marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', marginBottom: '4px' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <CheckCircle2 size={13} color="#16a34a" /> Valid {state.result?.category_label?.split('.')[1]?.trim() || docDef.title.split('.')[1]?.trim()}
+                          <CheckCircle2 size={13} color="#16a34a" /> Verified Document
                         </span>
-                        <span style={{ fontSize: '10.5px', padding: '1px 6px', borderRadius: '4px', background: '#dcfce7', fontWeight: '700' }}>
-                          Confidence: {Math.round((state.result?.confidence_score || 0.95) * 100)}%
+                        <span style={{ fontSize: '10px', padding: '1px 5px', borderRadius: '4px', background: '#dcfce7', fontWeight: '700' }}>
+                          {Math.round((state.result?.confidence_score || 0.95) * 100)}% Match
                         </span>
                       </div>
 
                       {/* OCR Extracted Key Fields */}
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', fontSize: '11px' }}>
                         {entities.pan && <div><b>PAN:</b> {entities.pan}</div>}
                         {entities.gstin && <div><b>GSTIN:</b> {entities.gstin}</div>}
                         {entities.cin && <div><b>CIN:</b> {entities.cin}</div>}
                         {entities.udyam && <div><b>Udyam:</b> {entities.udyam}</div>}
-                        {entities.udin && <div><b>ICAI UDIN:</b> {entities.udin}</div>}
+                        {entities.udin && <div><b>UDIN:</b> {entities.udin}</div>}
                         {entities.turnover_inr && <div><b>Turnover:</b> ₹{entities.turnover_inr.toLocaleString('en-IN')}</div>}
-                        {entities.experience_years && <div><b>Experience:</b> {entities.experience_years} Years</div>}
-                        {entities.vendor_name && <div><b>Entity Name:</b> {entities.vendor_name}</div>}
-                        {entities.certifications?.length > 0 && <div><b>Standards:</b> {entities.certifications.join(', ')}</div>}
+                        {entities.experience_years && <div><b>Experience:</b> {entities.experience_years} Yrs</div>}
+                        {entities.vendor_name && <div><b>Name:</b> {entities.vendor_name}</div>}
                       </div>
                     </div>
                   )}
                 </div>
 
                 {/* Upload Action / File info */}
-                <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   {isUploaded ? (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#0f172a', fontWeight: '600', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        <File size={14} color="#64748b" />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', color: '#0f172a', fontWeight: '600', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <File size={13} color="#64748b" />
                         <span title={state.file.name}>{state.file.name}</span>
                       </div>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'flex', gap: '4px' }}>
                         {state.result?.ocr_text && (
                           <button
                             type="button"
                             onClick={() => setSelectedDocForModal({ title: docDef.title, text: state.result.ocr_text, filename: state.file.name })}
-                            style={{ background: '#f1f5f9', border: 'none', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', color: '#475569' }}
+                            style={{ background: '#f1f5f9', border: 'none', padding: '3px 7px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', color: '#475569' }}
                           >
-                            <Eye size={12} /> Inspect OCR
+                            <Eye size={11} /> View OCR
                           </button>
                         )}
                         <button
                           type="button"
                           onClick={() => removeDocument(docDef.key)}
-                          style={{ background: '#fee2e2', border: 'none', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer', color: '#b91c1c', display: 'flex', alignItems: 'center', gap: '3px' }}
+                          style={{ background: '#fee2e2', border: 'none', padding: '3px 7px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer', color: '#b91c1c', display: 'flex', alignItems: 'center', gap: '3px' }}
                         >
-                          <Trash2 size={12} /> Remove
+                          <Trash2 size={11} /> Remove
                         </button>
                       </div>
                     </div>
@@ -787,7 +763,7 @@ export const BidderDashboard = ({ user }) => {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '6px',
-                      padding: '6px 12px',
+                      padding: '7px 12px',
                       background: '#0a3d62',
                       color: 'white',
                       borderRadius: '6px',
@@ -795,9 +771,10 @@ export const BidderDashboard = ({ user }) => {
                       fontWeight: '700',
                       cursor: 'pointer',
                       width: '100%',
-                      justifyContent: 'center'
+                      justifyContent: 'center',
+                      transition: 'all 0.2s'
                     }}>
-                      <Upload size={14} /> Upload {docDef.acceptedExt.split(',')[0]} / Image
+                      <Upload size={13} /> Upload File
                       <input
                         type="file"
                         accept={docDef.acceptedExt}
