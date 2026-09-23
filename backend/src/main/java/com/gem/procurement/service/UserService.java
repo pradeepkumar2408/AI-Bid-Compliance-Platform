@@ -38,6 +38,10 @@ public class UserService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
+        if ("PENDING".equalsIgnoreCase(user.getStatus()) || "PENDING_APPROVAL".equalsIgnoreCase(user.getStatus())) {
+            throw new IllegalArgumentException("Officer account is pending Administrator approval. Please wait for the GeM Administrator to approve your account before logging in.");
+        }
+
         if ("BLOCKED".equalsIgnoreCase(user.getStatus())) {
             throw new IllegalArgumentException("Account is suspended / blocked by the GeM Administrator. Please contact support.");
         }
@@ -108,6 +112,8 @@ public class UserService {
             }
         }
 
+        String initialStatus = "ROLE_OFFICER".equalsIgnoreCase(assignedRole) ? "PENDING" : "ACTIVE";
+
         User user = User.builder()
                 .username(username)
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
@@ -117,6 +123,7 @@ public class UserService {
                 .pan(pan)
                 .gstin(gstin)
                 .isIdentityVerified(isVerified)
+                .status(initialStatus)
                 .build();
 
         return userRepository.save(user);

@@ -199,6 +199,19 @@ export const AdminDashboard = ({ onOpenAudit }) => {
   };
 
   // --- USER MANAGEMENT HANDLERS ---
+  const handleApproveOfficer = async (user) => {
+    try {
+      await adminService.updateUserStatus(user.id, 'ACTIVE');
+      showNotification(`Evaluation Officer "${user.username}" approved successfully! They may now log in.`);
+      const updated = await adminService.getAllUsers();
+      setUsers(updated);
+      const updatedStats = await adminService.getOverviewStats().catch(() => null);
+      if (updatedStats) setOverviewStats(updatedStats);
+    } catch (err) {
+      showNotification('Failed to approve officer: ' + (err.response?.data?.error || err.message), true);
+    }
+  };
+
   const handleToggleUserStatus = async (user) => {
     const nextStatus = user.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
     if (!window.confirm(`Are you sure you want to change user "${user.username}" status to ${nextStatus}?`)) return;
@@ -643,7 +656,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
       }}>
         {[
           { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-          { id: 'users', label: 'User Management', icon: Users, badge: users.length },
+          { id: 'users', label: 'User Management', icon: Users, badge: users.filter(u => u.status === 'PENDING').length > 0 ? `${users.filter(u => u.status === 'PENDING').length} Pending` : users.length, badgeColor: users.filter(u => u.status === 'PENDING').length > 0 ? '#d97706' : undefined },
           { id: 'tenders', label: 'Tenders & Bids', icon: FileText, badge: tenders.length },
           { id: 'verification', label: 'Verification Logs', icon: ShieldCheck, badge: verificationLogs.length },
           { id: 'fraud', label: 'Risk & Fraud Detection', icon: ShieldAlert, badge: fraudAlerts.highSeverityCount > 0 ? fraudAlerts.highSeverityCount : null, badgeColor: '#dc2626' },
@@ -700,6 +713,40 @@ export const AdminDashboard = ({ onOpenAudit }) => {
       {/* ------------------------------------------------------------- */}
       {activeTab === 'overview' && (
         <div>
+          {/* Pending Officer Approvals Notification Banner */}
+          {users.filter(u => u.status === 'PENDING').length > 0 && (
+            <div style={{
+              backgroundColor: '#fffbeb',
+              border: '1px solid #fde68a',
+              borderRadius: 'var(--radius-sm)',
+              padding: '14px 18px',
+              marginBottom: '20px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '24px' }}>👮</span>
+                <div>
+                  <b style={{ color: '#92400e', fontSize: '13.5px' }}>
+                    {users.filter(u => u.status === 'PENDING').length} Evaluation Officer Registration(s) Awaiting Admin Clearance
+                  </b>
+                  <div style={{ color: '#78350f', fontSize: '12px', marginTop: '2px' }}>
+                    Newly registered officers cannot log in until approved by the system administrator.
+                  </div>
+                </div>
+              </div>
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => { setActiveTab('users'); setUserStatusFilter('PENDING'); }}
+                style={{ fontSize: '12px', backgroundColor: '#d97706', borderColor: '#d97706' }}
+              >
+                Review & Approve Officers →
+              </button>
+            </div>
+          )}
+
           {/* KPI Cards Grid */}
           <div className="grid-4" style={{ marginBottom: '22px' }}>
             <div className="gem-card" style={{ padding: '18px', position: 'relative', overflow: 'hidden' }}>
@@ -716,6 +763,11 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                 <span>Bidders: <b>{overviewStats?.biddersCount || 0}</b></span> •
                 <span>Admins: <b>{overviewStats?.adminCount || 0}</b></span>
               </div>
+              {users.filter(u => u.status === 'PENDING').length > 0 && (
+                <div style={{ fontSize: '11px', color: '#d97706', fontWeight: '700', marginTop: '4px' }}>
+                  ⏳ {users.filter(u => u.status === 'PENDING').length} pending officer clearance
+                </div>
+              )}
             </div>
 
             <div className="gem-card" style={{ padding: '18px', position: 'relative', overflow: 'hidden' }}>
@@ -879,6 +931,39 @@ export const AdminDashboard = ({ onOpenAudit }) => {
       {/* ------------------------------------------------------------- */}
       {activeTab === 'users' && (
         <div className="gem-card">
+          {/* Pending Officer Approvals Banner */}
+          {users.filter(u => u.status === 'PENDING').length > 0 && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              backgroundColor: '#fffbeb',
+              border: '1px solid #fde68a',
+              borderRadius: '8px',
+              padding: '12px 16px',
+              marginBottom: '16px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '20px' }}>👮</span>
+                <div>
+                  <div style={{ fontSize: '13px', fontWeight: '700', color: '#92400e' }}>
+                    {users.filter(u => u.status === 'PENDING').length} Evaluation Officer(s) Awaiting Clearance
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: '#b45309' }}>
+                    Newly registered Government Evaluation Officers cannot log in until approved by a GeM Administrator.
+                  </div>
+                </div>
+              </div>
+              <button
+                className="btn btn-sm"
+                style={{ backgroundColor: '#d97706', color: '#fff', fontSize: '11.5px', fontWeight: '700', cursor: 'pointer' }}
+                onClick={() => { setUserStatusFilter('PENDING'); setUserRoleFilter('ALL'); }}
+              >
+                View Pending ({users.filter(u => u.status === 'PENDING').length})
+              </button>
+            </div>
+          )}
+
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
@@ -923,6 +1008,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               >
                 <option value="ALL">All Statuses</option>
                 <option value="ACTIVE">Active</option>
+                <option value="PENDING">⏳ Pending Approval</option>
                 <option value="BLOCKED">Blocked / Suspended</option>
               </select>
             </div>
@@ -999,12 +1085,16 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                       <span style={{
                         fontSize: '11px',
                         fontWeight: '700',
-                        padding: '2px 6px',
+                        padding: '2px 8px',
                         borderRadius: '4px',
-                        backgroundColor: u.status === 'BLOCKED' ? '#fee2e2' : '#dcfce7',
-                        color: u.status === 'BLOCKED' ? '#991b1b' : '#15803d'
+                        backgroundColor: u.status === 'BLOCKED' ? '#fee2e2' : u.status === 'PENDING' ? '#fef3c7' : '#dcfce7',
+                        color: u.status === 'BLOCKED' ? '#991b1b' : u.status === 'PENDING' ? '#92400e' : '#15803d',
+                        border: u.status === 'PENDING' ? '1px solid #fde68a' : 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
                       }}>
-                        {u.status || 'ACTIVE'}
+                        {u.status === 'PENDING' ? '⏳ PENDING APPROVAL' : (u.status || 'ACTIVE')}
                       </span>
                     </td>
                     <td style={{ fontSize: '11.5px', color: '#64748b' }}>
@@ -1012,6 +1102,29 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                     </td>
                     <td style={{ textAlign: 'right' }}>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px' }}>
+                        {u.status === 'PENDING' && (
+                          <button
+                            className="btn btn-sm"
+                            title="Approve Evaluation Officer Account"
+                            onClick={() => handleApproveOfficer(u)}
+                            style={{
+                              backgroundColor: '#16a34a',
+                              color: '#fff',
+                              fontSize: '11px',
+                              fontWeight: '700',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              padding: '4px 10px',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <CheckCircle size={13} /> Approve
+                          </button>
+                        )}
+
                         <button
                           className="btn btn-sm btn-outline"
                           title={u.status === 'BLOCKED' ? 'Unblock User' : 'Block / Suspend User'}

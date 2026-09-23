@@ -68,6 +68,7 @@ public class AdminService {
         long adminCount = allUsers.stream().filter(u -> "ROLE_ADMIN".equalsIgnoreCase(u.getRole())).count();
         long activeUsers = allUsers.stream().filter(u -> "ACTIVE".equalsIgnoreCase(u.getStatus()) || u.getStatus() == null).count();
         long blockedUsers = allUsers.stream().filter(u -> "BLOCKED".equalsIgnoreCase(u.getStatus())).count();
+        long pendingOfficersCount = allUsers.stream().filter(u -> "ROLE_OFFICER".equalsIgnoreCase(u.getRole()) && "PENDING".equalsIgnoreCase(u.getStatus())).count();
 
         long totalTenders = tenderRepository.count();
         long totalBids = bidSubmissionRepository.count();
@@ -95,6 +96,7 @@ public class AdminService {
         stats.put("adminCount", adminCount);
         stats.put("activeUsers", activeUsers);
         stats.put("blockedUsers", blockedUsers);
+        stats.put("pendingOfficersCount", pendingOfficersCount);
         stats.put("totalTenders", totalTenders);
         stats.put("totalBids", totalBids);
         stats.put("acceptedBids", acceptedBids);
@@ -654,6 +656,21 @@ public class AdminService {
     // ==========================================
     public List<Map<String, Object>> getNotifications() {
         List<Map<String, Object>> notifs = new ArrayList<>();
+
+        // Pending Officer Registrations awaiting Admin Approval
+        List<User> pendingOfficers = userRepository.findAll().stream()
+                .filter(u -> "ROLE_OFFICER".equalsIgnoreCase(u.getRole()) && "PENDING".equalsIgnoreCase(u.getStatus()))
+                .collect(Collectors.toList());
+        for (User u : pendingOfficers) {
+            Map<String, Object> n = new HashMap<>();
+            n.put("id", "NOTIF-OFFICER-PENDING-" + u.getId());
+            n.put("title", "👮 New Evaluation Officer Approval Required");
+            n.put("message", "Officer " + u.getEmail() + " (" + u.getUsername() + ") has registered and requires administrative clearance.");
+            n.put("type", "USER_APPROVAL");
+            n.put("severity", "HIGH");
+            n.put("time", u.getCreatedAt() != null ? u.getCreatedAt().toString() : "Recent");
+            notifs.add(n);
+        }
 
         // Fraud and Tamper alerts
         List<BidDocument> tampered = bidDocumentRepository.findAll().stream().filter(d -> Boolean.TRUE.equals(d.getIsTampered())).collect(Collectors.toList());

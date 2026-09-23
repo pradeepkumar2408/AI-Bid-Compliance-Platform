@@ -150,7 +150,11 @@ export const Login = ({ onLoginSuccess, initialEmail, initialUsername, initialPa
         pan: regRole === 'ROLE_BIDDER' ? regPan.trim().toUpperCase() : null,
         gstin: regRole === 'ROLE_BIDDER' ? regGstin.trim().toUpperCase() : null,
       });
-      setSuccessMsg('Account created successfully! Please sign in with your email.');
+      if (regRole === 'ROLE_OFFICER') {
+        setSuccessMsg('👮 Evaluation Officer registration submitted! Your account is pending clearance from the GeM Administrator. Once approved, you will be able to log in.');
+      } else {
+        setSuccessMsg('Account created successfully! Please sign in with your email.');
+      }
       setEmail(regEmail.trim());
       setPassword('');
       setRegConfirmPassword('');
