@@ -32,9 +32,11 @@ import {
   ChevronRight,
   TrendingUp,
   Cpu,
-  Database
+  Database,
+  X
 } from 'lucide-react';
 import { adminService, tenderService } from '../../services/api';
+import { TENDER_DOCUMENT_OPTIONS } from '../officer/OfficerDashboard';
 
 export const AdminDashboard = ({ onOpenAudit }) => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -125,6 +127,16 @@ export const AdminDashboard = ({ onOpenAudit }) => {
   const [selectedCerts, setSelectedCerts] = useState([]);
   const [creatingTender, setCreatingTender] = useState(false);
   const certOptions = ['ISO-9001', 'ISO-27001', 'ISO-14001', 'CMMI-Level-3/5', 'BIS/ISI', 'MSME/UDYAM'];
+
+  // Required Document Options & Custom Document Requirements for Bidders
+  const [selectedRequiredDocs, setSelectedRequiredDocs] = useState([
+    'PAN_CARD', 'GST_CERTIFICATE', 'COMPANY_REGISTRATION', 'EXPERIENCE_CERTIFICATES', 'FINANCIAL_DOCUMENTS'
+  ]);
+  const [customDocList, setCustomDocList] = useState([]);
+  const [showCustomDocForm, setShowCustomDocForm] = useState(false);
+  const [customDocTitle, setCustomDocTitle] = useState('');
+  const [customDocDesc, setCustomDocDesc] = useState('');
+  const [customDocMandatory, setCustomDocMandatory] = useState(true);
 
   // Initial Load
   useEffect(() => {
@@ -369,11 +381,70 @@ export const AdminDashboard = ({ onOpenAudit }) => {
     }
   };
 
+  const handleDocToggle = (docKey) => {
+    if (selectedRequiredDocs.includes(docKey)) {
+      setSelectedRequiredDocs(prev => prev.filter(k => k !== docKey));
+    } else {
+      setSelectedRequiredDocs(prev => [...prev, docKey]);
+    }
+  };
+
+  const handleAddCustomDoc = (e) => {
+    e.preventDefault();
+    if (!customDocTitle.trim()) {
+      showNotification('Please enter a document title.', true);
+      return;
+    }
+    const cleanKey = `CUSTOM_${customDocTitle.trim().toUpperCase().replace(/[^A-Z0-9]/g, '_')}_${Date.now()}`;
+    const newDoc = {
+      key: cleanKey,
+      title: customDocTitle.trim(),
+      desc: customDocDesc.trim() || 'Custom statutory requirement specified by procuring admin.',
+      mandatory: customDocMandatory,
+      isCustom: true
+    };
+    setCustomDocList(prev => [...prev, newDoc]);
+    setCustomDocTitle('');
+    setCustomDocDesc('');
+    setCustomDocMandatory(true);
+    setShowCustomDocForm(false);
+    showNotification(`Added custom requirement "${newDoc.title}"!`);
+  };
+
+  const handleRemoveCustomDoc = (key) => {
+    setCustomDocList(prev => prev.filter(d => d.key !== key));
+  };
+
   const handleCreateTender = async (e) => {
     e.preventDefault();
+    const totalRequiredCount = selectedRequiredDocs.length + customDocList.length;
+    if (totalRequiredCount === 0) {
+      showNotification('Please select or add at least one required document for bidders.', true);
+      return;
+    }
     setCreatingTender(true);
     try {
-      await tenderService.create({
+      const combinedRequirements = [
+        ...selectedRequiredDocs.map(k => {
+          const std = TENDER_DOCUMENT_OPTIONS.find(d => d.key === k);
+          return {
+            key: k,
+            title: std?.label || k,
+            desc: std?.desc || '',
+            mandatory: true,
+            isCustom: false
+          };
+        }),
+        ...customDocList.map(c => ({
+          key: c.key,
+          title: c.title,
+          desc: c.desc,
+          mandatory: c.mandatory,
+          isCustom: true
+        }))
+      ];
+
+      const newTender = await tenderService.create({
         tenderNumber,
         title,
         department,
@@ -382,9 +453,21 @@ export const AdminDashboard = ({ onOpenAudit }) => {
         minTurnover: parseFloat(minTurnover),
         minExperienceYears: parseFloat(minExperienceYears),
         requiredCertifications: selectedCerts,
+        requiredCertificates: combinedRequirements,
       });
-      showNotification('Tender and Drools eligibility baseline created successfully!');
+      showNotification(`Tender ${newTender.tenderNumber} published with ${totalRequiredCount} document requirements!`);
       setShowCreateTenderModal(false);
+      // Reset form
+      setTenderNumber(`GEM/${new Date().getFullYear()}/B/${Math.floor(100000 + Math.random() * 900000)}`);
+      setTitle('');
+      setCategory('');
+      setEstimatedValue('');
+      setMinTurnover('');
+      setMinExperienceYears('');
+      setSelectedCerts([]);
+      setSelectedRequiredDocs(['PAN_CARD', 'GST_CERTIFICATE', 'COMPANY_REGISTRATION', 'EXPERIENCE_CERTIFICATES', 'FINANCIAL_DOCUMENTS']);
+      setCustomDocList([]);
+      setShowCustomDocForm(false);
       loadAllData();
     } catch (err) {
       showNotification('Failed to publish tender: ' + (err.response?.data || err.message), true);
@@ -2454,6 +2537,246 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                     onChange={(e) => setMinExperienceYears(e.target.value)}
                     required
                   />
+                </div>
+              </div>
+
+              {/* Document Requirements Checkboxes for Bidder */}
+              <div className="form-group" style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+                  <div>
+                    <label className="form-label" style={{ fontWeight: '800', margin: 0, color: 'var(--primary-dark)', fontSize: '13.5px' }}>
+                      Required Documents to be Provided by Bidder ({selectedRequiredDocs.length} Selected)
+                    </label>
+                    <span style={{ fontSize: '11.5px', color: '#64748b' }}>
+                      Only the documents checked below will be prompted and required for upload on the Bidder's portal for this tender.
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRequiredDocs(TENDER_DOCUMENT_OPTIONS.map(d => d.key))}
+                      style={{ fontSize: '11px', padding: '3px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#f8fafc', cursor: 'pointer', fontWeight: '600' }}
+                    >
+                      Select All (7)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRequiredDocs(['PAN_CARD', 'GST_CERTIFICATE', 'COMPANY_REGISTRATION', 'EXPERIENCE_CERTIFICATES', 'FINANCIAL_DOCUMENTS'])}
+                      style={{ fontSize: '11px', padding: '3px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#f8fafc', cursor: 'pointer', fontWeight: '600' }}
+                    >
+                      Standard (5)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRequiredDocs([])}
+                      style={{ fontSize: '11px', padding: '3px 8px', borderRadius: '4px', border: '1px solid #fecaca', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', fontWeight: '600' }}
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                  gap: '8px',
+                  maxHeight: '260px',
+                  overflowY: 'auto',
+                  padding: '10px',
+                  backgroundColor: '#f8fafc',
+                  borderRadius: '8px',
+                  border: '1px solid #e2e8f0'
+                }}>
+                  {TENDER_DOCUMENT_OPTIONS.map((doc) => {
+                    const isChecked = selectedRequiredDocs.includes(doc.key);
+                    return (
+                      <div
+                        key={doc.key}
+                        onClick={() => handleDocToggle(doc.key)}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '6px',
+                          border: isChecked ? '1.5px solid #0284c7' : '1px solid #cbd5e1',
+                          backgroundColor: isChecked ? '#f0f9ff' : '#ffffff',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '10px',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => {}}
+                          style={{ marginTop: '3px', cursor: 'pointer', accentColor: '#0284c7' }}
+                        />
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: '12.5px', fontWeight: '700', color: isChecked ? '#0369a1' : '#1e293b' }}>
+                              {doc.label}
+                            </span>
+                            {isChecked && (
+                              <span style={{ fontSize: '10px', background: '#dcfce7', color: '#166534', padding: '1px 6px', borderRadius: '4px', fontWeight: '700' }}>
+                                Required
+                              </span>
+                            )}
+                          </div>
+                          <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px', lineHeight: 1.3 }}>
+                            {doc.desc}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Custom Documents Added by Admin */}
+                {customDocList.length > 0 && (
+                  <div style={{ marginTop: '14px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: '800', color: '#0f172a', marginBottom: '6px' }}>
+                      Additional Admin-Defined Document Requirements ({customDocList.length}):
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {customDocList.map((cd) => (
+                        <div
+                          key={cd.key}
+                          style={{
+                            padding: '10px 14px',
+                            background: '#f0fdf4',
+                            borderRadius: '6px',
+                            border: '1px solid #86efac',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ fontSize: '13px', fontWeight: '800', color: '#166534' }}>{cd.title}</span>
+                              <span style={{ fontSize: '9.5px', padding: '1px 6px', borderRadius: '4px', background: cd.mandatory ? '#fee2e2' : '#f1f5f9', color: cd.mandatory ? '#b91c1c' : '#475569', fontWeight: '700' }}>
+                                {cd.mandatory ? 'MANDATORY' : 'OPTIONAL'}
+                              </span>
+                              <span style={{ fontSize: '9.5px', padding: '1px 6px', borderRadius: '4px', background: '#dbeafe', color: '#1e40af', fontWeight: '700' }}>
+                                CUSTOM
+                              </span>
+                            </div>
+                            {cd.desc && <div style={{ fontSize: '11px', color: '#4b5563', marginTop: '2px' }}>{cd.desc}</div>}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveCustomDoc(cd.key)}
+                            style={{ background: '#fee2e2', border: 'none', color: '#b91c1c', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '600' }}
+                          >
+                            <Trash2 size={12} /> Remove
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* + Add Custom Document Button / Inline Form */}
+                <div style={{ marginTop: '14px' }}>
+                  {!showCustomDocForm ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowCustomDocForm(true)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '8px 16px',
+                        borderRadius: '6px',
+                        background: '#f8fafc',
+                        border: '1.5px dashed #0284c7',
+                        color: '#0369a1',
+                        fontSize: '12.5px',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <PlusCircle size={15} /> + Add Any Custom Document Requirement (e.g. Site Visit Certificate, OEM Authorization, Power of Attorney)
+                    </button>
+                  ) : (
+                    <div style={{
+                      padding: '16px',
+                      background: '#f8fafc',
+                      borderRadius: '8px',
+                      border: '1.5px solid #0284c7',
+                      boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+                    }}>
+                      <div style={{ fontSize: '13px', fontWeight: '800', color: '#0369a1', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <FileText size={15} /> Add Custom Document Requirement for Bidders
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setShowCustomDocForm(false)}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                        <div>
+                          <label style={{ fontSize: '11.5px', fontWeight: '700', color: '#334155' }}>Document Title *</label>
+                          <input
+                            type="text"
+                            className="form-input"
+                            style={{ padding: '7px 10px', fontSize: '12.5px', marginTop: '4px' }}
+                            placeholder="e.g. Site Inspection & Feasibility Certificate"
+                            value={customDocTitle}
+                            onChange={(e) => setCustomDocTitle(e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '11.5px', fontWeight: '700', color: '#334155' }}>Description / Specific Criteria</label>
+                          <input
+                            type="text"
+                            className="form-input"
+                            style={{ padding: '7px 10px', fontSize: '12.5px', marginTop: '4px' }}
+                            placeholder="e.g. Signed & stamped by designated site officer"
+                            value={customDocDesc}
+                            onChange={(e) => setCustomDocDesc(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', cursor: 'pointer', fontWeight: '700', color: '#334155' }}>
+                          <input
+                            type="checkbox"
+                            checked={customDocMandatory}
+                            onChange={(e) => setCustomDocMandatory(e.target.checked)}
+                            style={{ accentColor: '#0284c7' }}
+                          />
+                          <span>Mandatory Document (Bidder cannot submit without this)</span>
+                        </label>
+
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button
+                            type="button"
+                            onClick={() => setShowCustomDocForm(false)}
+                            className="btn btn-outline"
+                            style={{ padding: '5px 12px', fontSize: '12px' }}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleAddCustomDoc}
+                            className="btn btn-primary"
+                            style={{ padding: '5px 14px', fontSize: '12px' }}
+                          >
+                            Add Requirement to Tender
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
