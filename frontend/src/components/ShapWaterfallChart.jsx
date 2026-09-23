@@ -19,9 +19,9 @@ export const ShapWaterfallChart = ({ shapJson }) => {
     <div className="shap-section" style={{ marginTop: '16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <BarChart3 size={18} color="var(--primary)" />
-          <h4 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--primary-dark)' }}>
-            Explainable AI Layer (SHAP Feature Attribution)
+          <BarChart3 size={17} color="var(--primary)" />
+          <h4 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--primary-dark)' }}>
+            Score Attribution (SHAP)
           </h4>
         </div>
         <div style={{ fontSize: '12px', color: '#64748b' }}>

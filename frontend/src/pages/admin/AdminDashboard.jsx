@@ -491,18 +491,18 @@ export const AdminDashboard = ({ onOpenAudit }) => {
           <div style={{
             backgroundColor: 'var(--primary)',
             color: '#ffffff',
-            padding: '12px',
+            padding: '10px',
             borderRadius: '10px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <Cpu size={26} />
+            <Cpu size={24} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                GeM Procurement Governance & AI Compliance Command Center
+                Admin Command Center
               </h2>
               <span style={{
                 backgroundColor: '#dcfce7',
@@ -519,7 +519,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               </span>
             </div>
             <p style={{ fontSize: '12.5px', color: '#64748b', margin: '3px 0 0 0' }}>
-              Centralized System Oversight • Identity & Fraud Detection • Drools Rule Config • Cryptographic Audit Chain
+              Platform administration, user clearance, and compliance governance.
             </p>
           </div>
         </div>
@@ -532,7 +532,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               onClick={() => setShowNotifDropdown(!showNotifDropdown)}
               style={{ display: 'flex', alignItems: 'center', gap: '6px', position: 'relative' }}
             >
-              <Bell size={16} />
+              <Bell size={15} />
               <span>Alerts</span>
               {notifications.length > 0 && (
                 <span style={{
@@ -566,7 +566,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                 overflowY: 'auto'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', borderBottom: '1px solid #e2e8f0', paddingBottom: '6px' }}>
-                  <b style={{ fontSize: '13px', color: '#1e293b' }}>Active System Alerts ({notifications.length})</b>
+                  <b style={{ fontSize: '13px', color: '#1e293b' }}>Active Alerts ({notifications.length})</b>
                   <button className="btn btn-sm btn-outline" style={{ fontSize: '11px', padding: '2px 6px' }} onClick={() => setShowNotifDropdown(false)}>Close</button>
                 </div>
                 {notifications.length === 0 ? (
@@ -596,8 +596,8 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             disabled={refreshing}
             style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <RefreshCw size={15} className={refreshing ? 'spin' : ''} />
-            {refreshing ? 'Syncing...' : 'Refresh Telemetry'}
+            <RefreshCw size={14} className={refreshing ? 'spin' : ''} />
+            {refreshing ? 'Syncing...' : 'Refresh'}
           </button>
 
           <button
@@ -605,7 +605,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             onClick={() => setShowCreateTenderModal(true)}
             style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <PlusCircle size={16} /> Publish Tender
+            <PlusCircle size={15} /> Publish Tender
           </button>
         </div>
       </div>
@@ -656,15 +656,15 @@ export const AdminDashboard = ({ onOpenAudit }) => {
       }}>
         {[
           { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-          { id: 'users', label: 'User Management', icon: Users, badge: users.filter(u => u.status === 'PENDING').length > 0 ? `${users.filter(u => u.status === 'PENDING').length} Pending` : users.length, badgeColor: users.filter(u => u.status === 'PENDING').length > 0 ? '#d97706' : undefined },
+          { id: 'users', label: 'Users', icon: Users, badge: users.filter(u => u.status === 'PENDING').length > 0 ? `${users.filter(u => u.status === 'PENDING').length} Pending` : users.length, badgeColor: users.filter(u => u.status === 'PENDING').length > 0 ? '#d97706' : undefined },
           { id: 'tenders', label: 'Tenders & Bids', icon: FileText, badge: tenders.length },
           { id: 'verification', label: 'Verification Logs', icon: ShieldCheck, badge: verificationLogs.length },
-          { id: 'fraud', label: 'Risk & Fraud Detection', icon: ShieldAlert, badge: fraudAlerts.highSeverityCount > 0 ? fraudAlerts.highSeverityCount : null, badgeColor: '#dc2626' },
-          { id: 'analytics', label: 'Analytics & Reports', icon: BarChart3 },
-          { id: 'rules', label: 'Rule Engine Management', icon: Sliders, badge: rules.length },
-          { id: 'documents', label: 'Document Monitoring', icon: FolderOpen, badge: documents.length },
-          { id: 'audit', label: 'Audit Trail & Integrity', icon: History },
-          { id: 'settings', label: 'System Settings', icon: Settings },
+          { id: 'fraud', label: 'Fraud Detection', icon: ShieldAlert, badge: fraudAlerts.highSeverityCount > 0 ? fraudAlerts.highSeverityCount : null, badgeColor: '#dc2626' },
+          { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+          { id: 'rules', label: 'Rules Engine', icon: Sliders, badge: rules.length },
+          { id: 'documents', label: 'Documents', icon: FolderOpen, badge: documents.length },
+          { id: 'audit', label: 'Audit Trail', icon: History },
+          { id: 'settings', label: 'Settings', icon: Settings },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;

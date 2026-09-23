@@ -16,9 +16,9 @@ export const DroolsRuleTrace = ({ traceJson }) => {
   return (
     <div className="drools-trace-section" style={{ marginTop: '14px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-        <Scale size={18} color="var(--primary)" />
-        <h4 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--primary-dark)' }}>
-          Drools Deterministic Rule Execution Trace ({rules.length} Rules Evaluated)
+        <Scale size={17} color="var(--primary)" />
+        <h4 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--primary-dark)' }}>
+          Eligibility Rules Trace ({rules.length})
         </h4>
       </div>
 

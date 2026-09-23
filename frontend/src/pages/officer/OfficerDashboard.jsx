@@ -314,11 +314,11 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
       {/* Top Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
-          <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--primary-dark)' }}>
-            Evaluation Officer Decision Support Cockpit
+          <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
+            Evaluation Officer Portal
           </h2>
-          <p style={{ fontSize: '13px', color: '#64748b' }}>
-            Tender Publishing, Drools Rule Matrix, Explainable AI Scoring & Human Decisions
+          <p style={{ fontSize: '13px', color: '#64748b', margin: '3px 0 0 0' }}>
+            Review bidder submissions, AI compliance scores, and record evaluation decisions.
           </p>
         </div>
 
@@ -558,8 +558,8 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
                     padding: '14px',
                     marginBottom: '18px'
                   }}>
-                    <h4 style={{ fontSize: '13.5px', fontWeight: '700', color: '#334155', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <UserCheck size={16} color="var(--primary)" /> Government Identity Verification (NSDL & GSTN Portal Validation)
+                    <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#334155', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <UserCheck size={16} color="var(--primary)" /> Identity Verification
                     </h4>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', fontSize: '12px' }}>
                       <div>
@@ -575,10 +575,10 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
                         <div><b>{selectedBidDossier.identityVerification?.nameMismatchFlag ? '⚠️ MISMATCH' : '✓ MATCHED'}</b></div>
                       </div>
                       <div>
-                        <span style={{ color: '#64748b' }}>Debarment Status:</span>
+                        <span style={{ color: '#64748b' }}>Debarment:</span>
                         <div>
                           <b style={{ color: selectedBidDossier.identityVerification?.isDebarred ? '#dc2626' : '#16a34a' }}>
-                            {selectedBidDossier.identityVerification?.isDebarred ? '🚨 DEBARRED / CVC LIST' : '✓ CLEAR'}
+                            {selectedBidDossier.identityVerification?.isDebarred ? '🚨 DEBARRED' : '✓ CLEAR'}
                           </b>
                         </div>
                       </div>
@@ -587,8 +587,8 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
 
                   {/* Documents & Tamper Checks */}
                   <div style={{ marginBottom: '18px' }}>
-                    <h4 style={{ fontSize: '13.5px', fontWeight: '700', color: '#334155', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <FileText size={16} color="var(--primary)" /> Uploaded Evidence & Fraud Scans ({selectedBidDossier.documents?.length || 0} Files)
+                    <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#334155', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <FileText size={16} color="var(--primary)" /> Uploaded Documents ({selectedBidDossier.documents?.length || 0})
                     </h4>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                       {selectedBidDossier.documents?.map((doc) => (

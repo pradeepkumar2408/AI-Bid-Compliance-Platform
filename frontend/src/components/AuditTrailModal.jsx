@@ -26,13 +26,13 @@ export const AuditTrailModal = ({ onClose }) => {
       <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1100px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Activity size={24} color="var(--primary)" />
+            <Activity size={22} color="var(--primary)" />
             <div>
-              <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--primary-dark)' }}>
-                Immutable Audit Trail (SHA-256 Chained Integrity Log)
+              <h3 style={{ fontSize: '17px', fontWeight: '700', color: 'var(--primary-dark)', margin: 0 }}>
+                Audit Trail
               </h3>
-              <span style={{ fontSize: '12px', color: '#64748b' }}>
-                Full Government Procurement Accountability & Tamper-Evident Trail
+              <span style={{ fontSize: '11.5px', color: '#64748b' }}>
+                Cryptographic SHA-256 integrity logs
               </span>
             </div>
           </div>
