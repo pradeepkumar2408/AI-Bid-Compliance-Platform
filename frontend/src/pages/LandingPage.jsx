@@ -97,42 +97,48 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
       <section style={{
         background: 'linear-gradient(180deg, #0a3d62 0%, #1e6091 60%, #f8fafc 100%)',
         color: 'white',
-        padding: '60px 24px 80px',
-        textAlign: 'center'
+        padding: '65px 24px 85px',
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <div style={{ maxWidth: '950px', margin: '0 auto' }}>
+        <div className="animate-fade-in-up" style={{ maxWidth: '950px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
-            background: 'rgba(255, 255, 255, 0.15)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            padding: '6px 16px',
-            borderRadius: '20px',
+            background: 'rgba(255, 255, 255, 0.16)',
+            border: '1px solid rgba(255, 255, 255, 0.35)',
+            padding: '6px 18px',
+            borderRadius: '24px',
             fontSize: '13px',
             fontWeight: '600',
-            marginBottom: '20px',
-            backdropFilter: 'blur(4px)'
+            marginBottom: '22px',
+            backdropFilter: 'blur(8px)',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+            transition: 'transform 0.3s ease'
           }}>
-            <Sparkles size={16} color="#fde047" /> Next-Gen AI Procurement Evaluation Architecture
+            <Sparkles size={16} color="#fde047" className="animate-float" /> Next-Gen AI Procurement Evaluation Architecture
           </div>
 
           <h1 style={{
-            fontSize: '36px',
+            fontSize: '38px',
             fontWeight: '900',
             lineHeight: 1.25,
             marginBottom: '18px',
-            textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            textShadow: '0 2px 8px rgba(0,0,0,0.25)',
+            letterSpacing: '-0.02em'
           }}>
             AI-Powered Integrated Bid Compliance Verification Platform
           </h1>
 
           <p style={{
             fontSize: '16px',
-            lineHeight: 1.6,
+            lineHeight: 1.65,
             opacity: 0.95,
             maxWidth: '780px',
-            margin: '0 auto 32px'
+            margin: '0 auto 32px',
+            color: '#f0f9ff'
           }}>
             An intelligent verification engine combining embedded Drools Rule evaluation, SHAP explainable scoring, Error Level Analysis (ELA) document forgery detection, and government registry validation.
           </p>
@@ -140,11 +146,9 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
           <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '20px' }}>
             <button
               onClick={() => onGetStarted()}
+              className="btn btn-accent"
               style={{
-                background: '#e67e22',
-                color: 'white',
-                border: 'none',
-                padding: '12px 30px',
+                padding: '12px 32px',
                 borderRadius: '8px',
                 fontWeight: '700',
                 fontSize: '15px',
@@ -152,8 +156,7 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '10px',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
-                transition: 'all 0.2s'
+                boxShadow: '0 6px 20px rgba(230, 126, 34, 0.4)'
               }}
             >
               Sign In to GeM Portal <ArrowRight size={18} />
@@ -169,32 +172,38 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '20px'
         }}>
-          <div className="gem-card" style={{ marginBottom: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-              <Scale size={24} color="#0a3d62" />
+          <div className="gem-card hover-elevate animate-fade-in-up" style={{ marginBottom: 0, borderTop: '3px solid #0a3d62' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+              <div style={{ background: '#f0f7ff', padding: '8px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Scale size={22} color="#0a3d62" />
+              </div>
               <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0a3d62' }}>Deterministic Drools Rules</h3>
             </div>
-            <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.55 }}>
               Executes rule matrix matching financial turnover, technical experience, and quality certifications against tender baselines with 100% transparent traces.
             </p>
           </div>
 
-          <div className="gem-card" style={{ marginBottom: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-              <Award size={24} color="#0a3d62" />
+          <div className="gem-card hover-elevate animate-fade-in-up" style={{ marginBottom: 0, borderTop: '3px solid #0284c7', animationDelay: '0.1s' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+              <div style={{ background: '#f0f9ff', padding: '8px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Award size={22} color="#0284c7" />
+              </div>
               <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0a3d62' }}>Explainable AI (SHAP)</h3>
             </div>
-            <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.55 }}>
               Provides feature attribution waterfall charts explaining the positive and negative contribution of every factor to the compliance score.
             </p>
           </div>
 
-          <div className="gem-card" style={{ marginBottom: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-              <FileSearch size={24} color="#0a3d62" />
+          <div className="gem-card hover-elevate animate-fade-in-up" style={{ marginBottom: 0, borderTop: '3px solid #e67e22', animationDelay: '0.2s' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+              <div style={{ background: '#fff9f0', padding: '8px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <FileSearch size={22} color="#e67e22" />
+              </div>
               <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0a3d62' }}>ELA Forgery & Duplicate Check</h3>
             </div>
-            <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.55 }}>
               Error Level Analysis detects digitally edited text or altered stamps. Perceptual hashing flags cross-bidder reused certificates.
             </p>
           </div>
@@ -203,10 +212,10 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
 
       {/* Active Tenders Public Catalog */}
       <section style={{ maxWidth: '1200px', margin: '0 auto 50px', padding: '0 24px', width: '100%' }}>
-        <div className="gem-card">
+        <div className="gem-card animate-fade-in-up">
           <div className="card-header">
             <div className="card-title" style={{ fontSize: '18px' }}>
-              <Building2 size={22} /> Currently Open GeM Procurement Tenders ({tenders.length})
+              <Building2 size={22} color="#0a3d62" /> Currently Open GeM Procurement Tenders ({tenders.length})
             </div>
             <button className="btn btn-primary" onClick={() => onGetStarted()}>
               Participate / Submit Bid <ChevronRight size={16} />
@@ -214,7 +223,10 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
           </div>
 
           {loading ? (
-            <p>Loading active tenders...</p>
+            <div style={{ padding: '24px', textAlign: 'center', color: '#64748b' }}>
+              <div className="animate-float" style={{ fontSize: '24px', marginBottom: '8px' }}>⏳</div>
+              <p>Loading active tenders...</p>
+            </div>
           ) : (
             <div className="gem-table-container">
               <table className="gem-table">
@@ -265,7 +277,7 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
                           </div>
                           <div style={{ display: 'flex', gap: '4px', marginTop: '4px', flexWrap: 'wrap' }}>
                             {Array.isArray(certs) && certs.map((c, i) => (
-                              <span key={i} style={{ fontSize: '10px', background: '#e2e8f0', padding: '1px 5px', borderRadius: '3px' }}>
+                              <span key={i} style={{ fontSize: '10px', background: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontWeight: '600' }}>
                                 {c}
                               </span>
                             ))}
@@ -283,7 +295,6 @@ export const LandingPage = ({ onGetStarted, onSelectRole }) => {
           )}
         </div>
       </section>
-
       {/* Footer */}
       <footer style={{
         marginTop: 'auto',

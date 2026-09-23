@@ -20,14 +20,15 @@ export const Navbar = ({ user, onLogout, activeTab, setActiveTab }) => {
               <button 
                 className={`nav-btn ${activeTab === 'audit' ? 'active' : ''}`}
                 onClick={() => setActiveTab('audit')}
+                style={{ cursor: 'pointer' }}
               >
                 <Activity size={15} /> Audit Trail
               </button>
             )}
 
             <div className="user-badge" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {user.role === 'ROLE_BIDDER' ? <Building size={16} /> : <User size={16} />}
-              <span style={{ fontWeight: '700', fontSize: '13px' }}>
+              {user.role === 'ROLE_BIDDER' ? <Building size={16} color="#38bdf8" /> : <User size={16} color="#38bdf8" />}
+              <span style={{ fontWeight: '700', fontSize: '13px', color: '#ffffff' }}>
                 {user.role === 'ROLE_BIDDER' ? (user.organizationName || user.username) : user.username}
               </span>
               <span className="role-pill">
@@ -35,7 +36,7 @@ export const Navbar = ({ user, onLogout, activeTab, setActiveTab }) => {
               </span>
             </div>
 
-            <button className="nav-btn" onClick={onLogout} title="Logout">
+            <button className="nav-btn" onClick={onLogout} title="Logout" style={{ cursor: 'pointer' }}>
               <LogOut size={15} /> Logout
             </button>
           </div>

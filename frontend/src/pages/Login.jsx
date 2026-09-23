@@ -202,14 +202,14 @@ export const Login = ({ onLoginSuccess, initialEmail, initialUsername, initialPa
       background: 'linear-gradient(135deg, #072a44 0%, #0a3d62 60%, #1e6091 100%)',
       padding: '20px'
     }}>
-      <div style={{
+      <div className="animate-scale-in" style={{
         background: 'white',
-        borderRadius: 'var(--radius-lg)',
+        borderRadius: 'var(--radius-xl)',
         padding: '36px',
         maxWidth: mode === 'signup' ? '540px' : '440px',
         width: '100%',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        transition: 'all 0.3s ease'
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
       }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
