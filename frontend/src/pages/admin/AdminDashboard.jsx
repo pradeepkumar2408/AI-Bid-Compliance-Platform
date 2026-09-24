@@ -957,14 +957,14 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               </div>
 
               {/* System Architecture Summary */}
-              <div style={{ marginTop: '18px', padding: '14px', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-sm)', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '12.5px', fontWeight: '700', color: '#334155', marginBottom: '6px' }}>
-                  Platform Integrity Architecture
+              <div style={{ marginTop: '18px', padding: '12px 14px', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-sm)', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '12px', fontWeight: '700', color: '#334155', marginBottom: '4px' }}>
+                  Core System Components
                 </div>
-                <div style={{ fontSize: '11.5px', color: '#64748b', lineHeight: 1.6 }}>
-                  • <b>AI Microservice (FastAPI)</b>: Tesseract OCR, NLP entity extraction, ELA forensic forgery detector.<br />
-                  • <b>Compliance Engine (Drools)</b>: Real-time multi-gate qualification & SHAP explainability attribution.<br />
-                  • <b>Audit Trail</b>: Cryptographically sealed SHA-256 blockchain hash linking.
+                <div style={{ fontSize: '11.5px', color: '#64748b', lineHeight: 1.5 }}>
+                  • <b>AI Microservice</b>: OCR & Forensic ELA Tamper Detection<br />
+                  • <b>Drools Rules</b>: Multi-Gate Eligibility & SHAP Attribution<br />
+                  • <b>Audit Trail</b>: Immutable SHA-256 Hash Chain
                 </div>
               </div>
             </div>
@@ -973,7 +973,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             <div className="gem-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <h3 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--primary-dark)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <History size={18} color="var(--primary)" /> Real-Time System Activity Feed
+                  <History size={18} color="var(--primary)" /> Real-Time Activity Feed
                 </h3>
                 <button className="btn btn-sm btn-outline" onClick={() => setActiveTab('audit')}>
                   View All ({auditLogs.length})
@@ -1033,7 +1033,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                     {users.filter(u => u.status === 'PENDING').length} Evaluation Officer(s) Awaiting Clearance
                   </div>
                   <div style={{ fontSize: '11.5px', color: '#b45309' }}>
-                    Newly registered Government Evaluation Officers cannot log in until approved by a GeM Administrator.
+                    New Evaluation Officers require administrator approval before login.
                   </div>
                 </div>
               </div>
@@ -1050,10 +1050,10 @@ export const AdminDashboard = ({ onOpenAudit }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                User Accounts & Access Control ({filteredUsers.length} Users)
+                User Accounts ({filteredUsers.length})
               </h3>
               <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
-                Manage Evaluation Officers, Bidders, and System Administrators
+                Manage Evaluation Officers, Bidders, and Administrators
               </p>
             </div>
 
@@ -1329,16 +1329,16 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <div>
                 <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                  Active GeM Tenders & Submissions Overview ({tenders.length})
+                  Active Tenders ({tenders.length})
                 </h3>
                 <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
-                  Click "Inspect Bids" on any tender to view submitted vendor dossiers & compliance scores
+                  Inspect submitted vendor dossiers & compliance scores
                 </p>
               </div>
 
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button className="btn btn-outline" onClick={() => exportToCsv('gem-tenders-summary.csv', tenders)}>
-                  <Download size={14} /> Export Tenders CSV
+                  <Download size={14} /> Export CSV
                 </button>
                 <button className="btn btn-primary" onClick={() => setShowCreateTenderModal(true)}>
                   <PlusCircle size={15} /> Publish Tender
@@ -1350,21 +1350,21 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               <table className="gem-table">
                 <thead>
                   <tr>
-                    <th>Tender Reference & Department</th>
+                    <th>Tender & Dept</th>
                     <th>Category</th>
                     <th>Est. Value</th>
-                    <th>Min Turnover / Exp</th>
-                    <th>Total Bids</th>
+                    <th>Turnover / Exp</th>
+                    <th>Bids</th>
                     <th>Accepted / Rejected</th>
                     <th>Avg Score</th>
-                    <th style={{ textAlign: 'right' }}>Inspect</th>
+                    <th style={{ textAlign: 'right' }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {tenders.length === 0 ? (
                     <tr>
                       <td colSpan="8" style={{ textAlign: 'center', padding: '32px', color: '#64748b' }}>
-                        No procurement tenders stored in the database. Click <b>+ Create GeM Tender</b> to add one.
+                        No procurement tenders found. Click <b>+ Publish Tender</b> to create one.
                       </td>
                     </tr>
                   ) : (
@@ -1403,7 +1403,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                           onClick={() => handleInspectTender(t)}
                           style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                         >
-                          <Eye size={13} /> Inspect Bids ({t.totalBids || 0})
+                          <Eye size={13} /> Inspect ({t.totalBids || 0})
                         </button>
                       </td>
                     </tr>
@@ -1420,12 +1420,12 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px solid #e2e8f0', paddingBottom: '10px' }}>
                 <div>
                   <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                    Submitted Bids for Tender: {inspectingTender.tenderNumber}
+                    Submitted Bids: {inspectingTender.tenderNumber}
                   </h3>
                   <div style={{ fontSize: '12px', color: '#64748b' }}>{inspectingTender.title}</div>
                 </div>
                 <button className="btn btn-sm btn-outline" onClick={() => { setInspectingTender(null); setSelectedTenderBids(null); }}>
-                  Close Inspection
+                  Close
                 </button>
               </div>
 
@@ -1436,12 +1436,12 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                   <table className="gem-table">
                     <thead>
                       <tr>
-                        <th>Bid Number & Bidder</th>
-                        <th>Declared Turnover / Exp</th>
+                        <th>Bid & Bidder</th>
+                        <th>Turnover / Exp</th>
                         <th>AI Score & Risk</th>
                         <th>Identity Status</th>
-                        <th>Officer Decision</th>
-                        <th>Evidence Scans</th>
+                        <th>Decision</th>
+                        <th>Documents</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1490,9 +1490,9 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                           </td>
                           <td>
                             <div style={{ fontSize: '11.5px' }}>
-                              <span>{b.documentCount} Uploaded Files</span>
-                              {b.hasTamperedDocs && <div style={{ color: '#dc2626', fontWeight: '700' }}>[ELA TAMPERED]</div>}
-                              {b.hasDuplicateDocs && <div style={{ color: '#d97706', fontWeight: '700' }}>[DUPLICATE REUSED]</div>}
+                              <span>{b.documentCount} Files</span>
+                              {b.hasTamperedDocs && <div style={{ color: '#dc2626', fontWeight: '700' }}>[TAMPERED]</div>}
+                              {b.hasDuplicateDocs && <div style={{ color: '#d97706', fontWeight: '700' }}>[DUPLICATE]</div>}
                             </div>
                           </td>
                         </tr>
@@ -1514,10 +1514,10 @@ export const AdminDashboard = ({ onOpenAudit }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                NSDL & GSTN Portal Verification Telemetry ({verificationLogs.length} Records)
+                NSDL & GSTN Telemetry ({verificationLogs.length})
               </h3>
               <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
-                Cross-database validation logs between Income Tax Department, GSTN, and Central Vigilance Commission
+                Cross-portal PAN, GSTIN & CVC debarment records
               </p>
             </div>
 
@@ -1539,12 +1539,12 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               <thead>
                 <tr>
                   <th>Bid & Entity</th>
-                  <th>PAN Status (NSDL)</th>
-                  <th>GSTIN Status (GSTN)</th>
-                  <th>Name Cross-Verification</th>
-                  <th>CVC Debarment List</th>
-                  <th>Overall Verification</th>
-                  <th>Timestamp</th>
+                  <th>PAN (NSDL)</th>
+                  <th>GSTIN (GSTN)</th>
+                  <th>Name Match</th>
+                  <th>Debarment</th>
+                  <th>Status</th>
+                  <th>Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -1570,7 +1570,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                         fontWeight: '700',
                         color: v.nameMismatchFlag ? '#dc2626' : '#16a34a'
                       }}>
-                        {v.nameMismatchFlag ? '⚠️ MISMATCH DETECTED' : '✓ FULLY MATCHED'}
+                        {v.nameMismatchFlag ? '⚠️ MISMATCH' : '✓ MATCHED'}
                       </span>
                     </td>
                     <td>
@@ -1614,27 +1614,27 @@ export const AdminDashboard = ({ onOpenAudit }) => {
           {/* Summary Banner */}
           <div className="grid-3" style={{ marginBottom: '18px' }}>
             <div className="gem-card" style={{ borderLeft: '4px solid #dc2626', padding: '16px' }}>
-              <div style={{ fontSize: '12px', fontWeight: '700', color: '#991b1b' }}>HIGH SEVERITY ALERTS</div>
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#991b1b' }}>HIGH SEVERITY</div>
               <div style={{ fontSize: '24px', fontWeight: '800', color: '#dc2626', marginTop: '4px' }}>
                 {fraudAlerts.highSeverityCount || 0}
               </div>
-              <div style={{ fontSize: '11px', color: '#64748b' }}>Immediate disqualification & forensic review required</div>
+              <div style={{ fontSize: '11px', color: '#64748b' }}>Critical forensic or debarment flags</div>
             </div>
 
             <div className="gem-card" style={{ borderLeft: '4px solid #d97706', padding: '16px' }}>
-              <div style={{ fontSize: '12px', fontWeight: '700', color: '#92400e' }}>MEDIUM SEVERITY ALERTS</div>
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#92400e' }}>MEDIUM SEVERITY</div>
               <div style={{ fontSize: '24px', fontWeight: '800', color: '#d97706', marginTop: '4px' }}>
                 {fraudAlerts.mediumSeverityCount || 0}
               </div>
-              <div style={{ fontSize: '11px', color: '#64748b' }}>Identity mismatch or irrelevant document classification</div>
+              <div style={{ fontSize: '11px', color: '#64748b' }}>Identity or category discrepancies</div>
             </div>
 
             <div className="gem-card" style={{ borderLeft: '4px solid #16a34a', padding: '16px' }}>
-              <div style={{ fontSize: '12px', fontWeight: '700', color: '#166534' }}>LOW SEVERITY / WARNINGS</div>
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#166534' }}>LOW / WARNINGS</div>
               <div style={{ fontSize: '24px', fontWeight: '800', color: '#16a34a', marginTop: '4px' }}>
                 {fraudAlerts.lowSeverityCount || 0}
               </div>
-              <div style={{ fontSize: '11px', color: '#64748b' }}>Minor turnover or certification discrepancy</div>
+              <div style={{ fontSize: '11px', color: '#64748b' }}>Minor turnover or cert discrepancies</div>
             </div>
           </div>
 
@@ -1642,7 +1642,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
           <div className="gem-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <ShieldAlert size={18} color="#dc2626" /> Comprehensive Fraud & Tampering Intelligence ({filteredAlerts.length})
+                <ShieldAlert size={18} color="#dc2626" /> Fraud Alerts ({filteredAlerts.length})
               </h3>
 
               <div style={{ display: 'flex', gap: '6px' }}>
@@ -1652,7 +1652,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                     className={`btn btn-sm ${fraudCategoryFilter === cat ? 'btn-primary' : 'btn-outline'}`}
                     onClick={() => setFraudCategoryFilter(cat)}
                   >
-                    {cat.replace('_', ' ')}
+                    {cat.replace(/_/g, ' ')}
                   </button>
                 ))}
               </div>
@@ -1661,8 +1661,8 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             {filteredAlerts.length === 0 ? (
               <div style={{ padding: '30px', textAlign: 'center', color: '#16a34a' }}>
                 <CheckCircle size={36} style={{ marginBottom: '8px' }} />
-                <div style={{ fontWeight: '700', fontSize: '14px' }}>No Active Fraud Alerts Detected</div>
-                <p style={{ fontSize: '12px', color: '#64748b' }}>All documents and vendor tax records have passed forensic and integrity validation.</p>
+                <div style={{ fontWeight: '700', fontSize: '14px' }}>No Active Fraud Alerts</div>
+                <p style={{ fontSize: '12px', color: '#64748b' }}>All documents and records passed forensic checks.</p>
               </div>
             ) : (
               <div style={{ display: 'grid', gap: '10px' }}>
@@ -1687,13 +1687,13 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                           backgroundColor: alert.severity === 'HIGH' ? '#dc2626' : '#d97706',
                           color: '#ffffff'
                         }}>
-                          {alert.severity} SEVERITY
+                          {alert.severity}
                         </span>
                         <span style={{ fontSize: '11px', fontWeight: '700', color: '#64748b' }}>
-                          CATEGORY: {alert.category}
+                          {alert.category}
                         </span>
                       </div>
-                      <span style={{ fontSize: '11px', color: '#64748b' }}>Alert ID: <code>{alert.id}</code></span>
+                      <span style={{ fontSize: '11px', color: '#64748b' }}>ID: <code>{alert.id}</code></span>
                     </div>
 
                     <div style={{ fontWeight: '700', fontSize: '14px', color: '#1e293b', marginTop: '6px' }}>
@@ -1706,7 +1706,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
 
                     {alert.filename && (
                       <div style={{ fontSize: '11.5px', color: '#0369a1', marginTop: '6px' }}>
-                        Associated File: <code>{alert.filename}</code>
+                        File: <code>{alert.filename}</code>
                       </div>
                     )}
                   </div>
@@ -1734,8 +1734,8 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             marginBottom: '18px'
           }}>
             <div>
-              <b style={{ fontSize: '14px', color: 'var(--primary-dark)' }}>Official GeM Audit & Compliance Telemetry Exports</b>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>Generate downloadable CSV / JSON compliance reports for CAG and Government Audits</div>
+              <b style={{ fontSize: '14px', color: 'var(--primary-dark)' }}>Audit & Compliance Reports</b>
+              <div style={{ fontSize: '12px', color: '#64748b' }}>Downloadable CSV & JSON compliance telemetry</div>
             </div>
 
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -1746,7 +1746,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                 <Download size={14} /> Verification CSV
               </button>
               <button className="btn btn-primary" onClick={exportJsonReport}>
-                <Download size={14} /> Full System JSON Report
+                <Download size={14} /> Full JSON Report
               </button>
             </div>
           </div>
@@ -1755,7 +1755,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             {/* Score Distribution Chart */}
             <div className="gem-card">
               <h3 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--primary-dark)', marginBottom: '14px' }}>
-                Compliance Score Distribution (AI & Drools Baseline)
+                Compliance Score Distribution
               </h3>
               <div style={{ display: 'grid', gap: '12px' }}>
                 {analytics?.scoreDistribution && Object.entries(analytics.scoreDistribution).map(([label, count]) => {
@@ -1781,7 +1781,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             {/* Officer Decisions Distribution */}
             <div className="gem-card">
               <h3 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--primary-dark)', marginBottom: '14px' }}>
-                Evaluation Officer Decision Breakdown
+                Evaluation Decisions Breakdown
               </h3>
               <div style={{ display: 'grid', gap: '12px' }}>
                 {analytics?.decisionDistribution && Object.entries(analytics.decisionDistribution).map(([decision, count]) => {
@@ -1817,14 +1817,14 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <div>
                 <h3 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--primary-dark)', margin: 0 }}>
-                  Dynamic AI Scoring Criteria Weights (%)
+                  Scoring Criteria Weights (%)
                 </h3>
                 <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
-                  Adjust how Drools and the AI Compliance Engine allocate scoring weights across criteria without code deployments
+                  Adjust how Drools and AI allocate scoring weights across criteria
                 </p>
               </div>
               <button className="btn btn-primary" onClick={handleUpdateRuleWeights}>
-                <Check size={14} /> Save Scoring Weights
+                <Check size={14} /> Save Weights
               </button>
             </div>
 
@@ -1856,10 +1856,10 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <div>
                 <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                  Drools Eligibility & Compliance Rules ({rules.length})
+                  Eligibility & Compliance Rules ({rules.length})
                 </h3>
                 <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
-                  Manage dynamic DRL rule expressions, weight factors, and mandatory gates
+                  Manage Drools rule expressions and mandatory eligibility gates
                 </p>
               </div>
 
@@ -1871,7 +1871,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                   setShowAddRuleModal(true);
                 }}
               >
-                <PlusCircle size={15} /> Add Custom Compliance Rule
+                <PlusCircle size={15} /> Add Rule
               </button>
             </div>
 
@@ -1881,7 +1881,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                   <tr>
                     <th>Rule Name</th>
                     <th>Category</th>
-                    <th>DRL Condition Expression</th>
+                    <th>DRL Expression</th>
                     <th>Weight</th>
                     <th>Mandatory Gate</th>
                     <th>Pass Criterion</th>
@@ -1945,7 +1945,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             <div className="modal-backdrop" onClick={() => setShowAddRuleModal(false)}>
               <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
                 <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', marginBottom: '14px' }}>
-                  {editingRule ? `Edit Rule: ${editingRule.ruleName}` : 'Add New Dynamic Compliance Rule'}
+                  {editingRule ? `Edit Rule: ${editingRule.ruleName}` : 'Add Compliance Rule'}
                 </h3>
 
                 <form onSubmit={handleSaveRule}>
@@ -1969,7 +1969,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                     <input
                       type="text"
                       className="form-input"
-                      placeholder="e.g. Mandatory MSME UDYAM Registration Check"
+                      placeholder="e.g. Mandatory MSME UDYAM Check"
                       value={ruleForm.ruleName}
                       onChange={(e) => setRuleForm({ ...ruleForm, ruleName: e.target.value })}
                       required
@@ -1993,7 +1993,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                     </div>
 
                     <div className="form-group">
-                      <label className="form-label">Rule Weight (Multiplier)</label>
+                      <label className="form-label">Weight (Multiplier)</label>
                       <input
                         type="number"
                         step="0.1"
@@ -2024,7 +2024,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                         checked={ruleForm.isMandatory}
                         onChange={(e) => setRuleForm({ ...ruleForm, isMandatory: e.target.checked })}
                       />
-                      <span><b>Strict Mandatory Eligibility Gate (Failing this rule triggers bid rejection)</b></span>
+                      <span><b>Strict Mandatory Gate (Failing triggers rejection)</b></span>
                     </label>
                   </div>
 
@@ -2033,7 +2033,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                       Cancel
                     </button>
                     <button type="submit" className="btn btn-primary">
-                      {editingRule ? 'Save Rule Modifications' : 'Create & Register Rule'}
+                      {editingRule ? 'Save Rule' : 'Create Rule'}
                     </button>
                   </div>
                 </form>
@@ -2051,10 +2051,10 @@ export const AdminDashboard = ({ onOpenAudit }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                Platform Uploaded Evidence Repository ({filteredDocs.length} Documents)
+                Document Repository ({filteredDocs.length})
               </h3>
               <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
-                AI Classification, OCR text extracts, Error Level Analysis (ELA) scores, and duplicate SHA-256 hashes
+                AI classification, OCR extracts, and forensic ELA tamper results
               </p>
             </div>
 
@@ -2062,9 +2062,9 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               <Search size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
               <input
                 type="text"
-                placeholder="Search file, bidder, category..."
+                placeholder="Search file, bidder..."
                 className="form-input"
-                style={{ paddingLeft: '30px', fontSize: '12px', width: '260px', height: '34px' }}
+                style={{ paddingLeft: '30px', fontSize: '12px', width: '240px', height: '34px' }}
                 value={docSearch}
                 onChange={(e) => setDocSearch(e.target.value)}
               />
@@ -2075,13 +2075,13 @@ export const AdminDashboard = ({ onOpenAudit }) => {
             <table className="gem-table">
               <thead>
                 <tr>
-                  <th>Filename & Bidder</th>
-                  <th>Declared Type</th>
-                  <th>AI Detected Category</th>
-                  <th>Classification Gate</th>
+                  <th>File & Bidder</th>
+                  <th>Declared</th>
+                  <th>Detected Category</th>
+                  <th>Validation</th>
                   <th>Extracted Values</th>
                   <th>Forensic Integrity</th>
-                  <th style={{ textAlign: 'right' }}>Inspect OCR</th>
+                  <th style={{ textAlign: 'right' }}>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -2099,7 +2099,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                       </span>
                     </td>
                     <td>
-                      <b style={{ color: '#0369a1', fontSize: '12px' }}>{doc.detectedCategory || 'Standard Procurement'}</b>
+                      <b style={{ color: '#0369a1', fontSize: '12px' }}>{doc.detectedCategory || 'Standard'}</b>
                       {doc.confidenceScore > 0 && (
                         <div style={{ fontSize: '10.5px', color: '#64748b' }}>Conf: {Math.round(doc.confidenceScore * 100)}%</div>
                       )}
@@ -2130,11 +2130,11 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                         </span>
                       ) : doc.isDuplicate ? (
                         <span style={{ color: '#d97706', fontWeight: '700', fontSize: '11px' }}>
-                          ⚠️ DUPLICATE COLLISION
+                          ⚠️ DUPLICATE
                         </span>
                       ) : (
                         <span style={{ color: '#16a34a', fontWeight: '700', fontSize: '11px' }}>
-                          ✓ CLEAN PASS
+                          ✓ CLEAN
                         </span>
                       )}
                     </td>
@@ -2158,7 +2158,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '640px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                   <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                    Extracted OCR & NLP Metadata: {selectedDocForOcr.filename}
+                    OCR Metadata: {selectedDocForOcr.filename}
                   </h3>
                   <button className="btn btn-sm btn-outline" onClick={() => setSelectedDocForOcr(null)}>Close</button>
                 </div>
@@ -2169,7 +2169,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Tesseract Raw OCR Stream Extract</label>
+                  <label className="form-label">OCR Text Extract</label>
                   <textarea
                     className="form-textarea"
                     rows={8}
@@ -2191,10 +2191,10 @@ export const AdminDashboard = ({ onOpenAudit }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-                Cryptographically Sealed Immutable Audit Trail ({filteredAuditLogs.length} Records)
+                Immutable Audit Trail ({filteredAuditLogs.length})
               </h3>
               <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
-                Every procurement event is hashed using SHA-256 chained to prior blocks to guarantee non-repudiation
+                Cryptographically sealed SHA-256 blockchain audit logs
               </p>
             </div>
 
@@ -2204,16 +2204,16 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                 onClick={handleVerifyAuditChain}
                 style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
               >
-                <ShieldCheck size={16} /> Verify SHA-256 Hash Chain
+                <ShieldCheck size={16} /> Verify SHA-256 Chain
               </button>
 
               <div style={{ position: 'relative' }}>
                 <Search size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
                 <input
                   type="text"
-                  placeholder="Filter logs by actor, event..."
+                  placeholder="Filter logs..."
                   className="form-input"
-                  style={{ paddingLeft: '30px', fontSize: '12px', width: '220px', height: '34px' }}
+                  style={{ paddingLeft: '30px', fontSize: '12px', width: '180px', height: '34px' }}
                   value={auditSearch}
                   onChange={(e) => setAuditSearch(e.target.value)}
                 />
@@ -2240,7 +2240,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
                     {chainStatus.message}
                   </b>
                   <div style={{ fontSize: '11.5px', color: '#64748b' }}>
-                    Total Audit Blocks Verified: <b>{chainStatus.totalLogsChecked}</b> | Cryptographic Proof: <b>SHA-256</b>
+                    Blocks Verified: <b>{chainStatus.totalLogsChecked}</b> | Cryptographic Proof: <b>SHA-256</b>
                   </div>
                 </div>
               </div>
@@ -2262,11 +2262,11 @@ export const AdminDashboard = ({ onOpenAudit }) => {
               <thead>
                 <tr>
                   <th>Timestamp</th>
-                  <th>Actor & Role</th>
-                  <th>Event Type</th>
-                  <th>Target Entity</th>
-                  <th>Action Summary</th>
-                  <th>Cryptographic SHA-256 Hash</th>
+                  <th>Actor</th>
+                  <th>Event</th>
+                  <th>Target</th>
+                  <th>Action</th>
+                  <th>SHA-256 Hash</th>
                 </tr>
               </thead>
               <tbody>
@@ -2307,7 +2307,7 @@ export const AdminDashboard = ({ onOpenAudit }) => {
       {activeTab === 'settings' && (
         <div className="gem-card" style={{ maxWidth: '800px' }}>
           <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--primary-dark)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Settings size={18} color="var(--primary)" /> Global API Integrations & Risk Thresholds
+            <Settings size={18} color="var(--primary)" /> System Settings & Thresholds
           </h3>
 
           <form onSubmit={handleSaveSettings}>

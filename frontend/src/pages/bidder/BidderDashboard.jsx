@@ -444,10 +444,10 @@ export const BidderDashboard = ({ user }) => {
       }}>
         <div>
           <h1 style={{ fontSize: '22px', fontWeight: '800', margin: 0, letterSpacing: '-0.01em' }}>
-            Bid Submission & Verification Center
+            Bidder Portal
           </h1>
           <p style={{ margin: '4px 0 0 0', opacity: 0.9, fontSize: '13px', color: '#e2e8f0' }}>
-            Select a target tender, review statutory requirements, and upload required compliance certificates.
+            Submit compliance documents and track bid evaluations.
           </p>
         </div>
 
@@ -804,17 +804,17 @@ export const BidderDashboard = ({ user }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid #e2e8f0', paddingBottom: '16px', marginBottom: '20px' }}>
             <div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '800', color: '#0a3d62', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                <Cpu size={14} /> AI Verification Intelligence Dossier
+                <Cpu size={14} /> AI Verification
               </div>
               <h2 style={{ fontSize: '20px', fontWeight: '800', color: '#0f172a', margin: '4px 0 0 0' }}>
-                Authenticity & Compliance Evaluation Results
+                Compliance & Verification Report
               </h2>
             </div>
 
             {/* Score & Risk Gauges */}
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
               <div style={{ textAlign: 'center', padding: '8px 16px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '700' }}>AUTHENTICITY SCORE</div>
+                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '700' }}>AUTHENTICITY</div>
                 <div style={{ fontSize: '24px', fontWeight: '900', color: verificationReport.authenticity_score >= 80 ? '#16a34a' : (verificationReport.authenticity_score >= 50 ? '#d97706' : '#dc2626') }}>
                   {verificationReport.authenticity_score}%
                 </div>
@@ -836,7 +836,7 @@ export const BidderDashboard = ({ user }) => {
               </div>
 
               <div style={{ textAlign: 'center', padding: '8px 16px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '700' }}>DOCUMENT STATUS</div>
+                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '700' }}>STATUS</div>
                 <div style={{
                   fontSize: '14px',
                   fontWeight: '800',
@@ -855,11 +855,11 @@ export const BidderDashboard = ({ user }) => {
           {/* Navigation Tabs */}
           <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid #e2e8f0', marginBottom: '20px', overflowX: 'auto', paddingBottom: '4px' }}>
             {[
-              { key: 'OVERVIEW', label: '📊 Summary & Score Breakdown' },
-              { key: 'STRUCTURED_VS_UNSTRUCTURED', label: '📑 Structured vs Unstructured' },
-              { key: 'CROSS_VERIFICATION', label: '🔄 Cross-Verification Matrix' },
-              { key: 'AUTHENTICITY_TAMPER', label: '🛡️ Authenticity & Tamper Radar' },
-              { key: 'EXPLAINABLE_AI', label: '💡 Explainable AI Reasoning' }
+              { key: 'OVERVIEW', label: '📊 Summary' },
+              { key: 'STRUCTURED_VS_UNSTRUCTURED', label: '📑 Data Extraction' },
+              { key: 'CROSS_VERIFICATION', label: '🔄 Cross-Check' },
+              { key: 'AUTHENTICITY_TAMPER', label: '🛡️ Tamper Radar' },
+              { key: 'EXPLAINABLE_AI', label: '💡 AI Insights' }
             ].map(tab => (
               <button
                 key={tab.key}
@@ -931,25 +931,25 @@ export const BidderDashboard = ({ user }) => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: '800', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <ShieldCheck size={16} color="#059669" /> Structured Verification (PAN & GSTIN API)
+                  <ShieldCheck size={16} color="#059669" /> Structured ID Verification
                 </h4>
                 <div style={{ fontSize: '12.5px', display: 'flex', flexDirection: 'column', gap: '6px', color: '#334155' }}>
                   <div><b>PAN Format:</b> {pan ? '✅ Valid 10-char Alphanumeric' : '❌ Not Provided'}</div>
                   <div><b>GSTIN Format:</b> {gstin ? '✅ Valid 15-digit Format' : '❌ Not Provided'}</div>
                   <div><b>PAN Embedded in GSTIN:</b> {verificationReport.authenticity_analysis?.pan_gstin_linked ? '✅ Confirmed (Chars 3-12 Match PAN)' : '❌ Mismatch'}</div>
-                  <div><b>Registry API Source:</b> Income Tax Department & GSTN Master Gateway</div>
+                  <div><b>Source:</b> Income Tax Department & GSTN Gateway</div>
                 </div>
               </div>
 
               <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: '800', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Cpu size={16} color="#7c3aed" /> Unstructured Processing (AI OCR + NLP Engine)
+                  <Cpu size={16} color="#7c3aed" /> Document OCR & Extraction
                 </h4>
                 <div style={{ fontSize: '12.5px', display: 'flex', flexDirection: 'column', gap: '6px', color: '#334155' }}>
-                  <div><b>OCR Engine:</b> Tesseract Multi-Pass + PyMuPDF Vector Text Extractor</div>
-                  <div><b>NLP Normalization:</b> Rule-based Regex + Levenshtein Entity Resolution</div>
-                  <div><b>Parsed Categories:</b> CIN/Udyam, Work Orders, UDIN 18-digit, ISO Standards</div>
-                  <div><b>Processing Accuracy:</b> 98.4% Confidence across uploaded certificates</div>
+                  <div><b>OCR Engine:</b> Multi-Pass Text Extractor</div>
+                  <div><b>NLP Normalization:</b> Entity Resolution & Fuzzy Matching</div>
+                  <div><b>Parsed Categories:</b> CIN/Udyam, Work Orders, UDIN, ISO Standards</div>
+                  <div><b>Confidence:</b> 98.4% across uploaded certificates</div>
                 </div>
               </div>
             </div>
@@ -959,7 +959,7 @@ export const BidderDashboard = ({ user }) => {
           {activeReportTab === 'CROSS_VERIFICATION' && (
             <div>
               <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>
-                Multi-Document & User Input Cross-Verification Results
+                Cross-Verification Results
               </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {verificationReport.cross_verification?.matches?.map((m, idx) => (
@@ -975,7 +975,7 @@ export const BidderDashboard = ({ user }) => {
                 ))}
 
                 {verificationReport.cross_verification?.matches?.length === 0 && verificationReport.cross_verification?.mismatches?.length === 0 && (
-                  <div style={{ padding: '12px', color: '#64748b', fontSize: '13px' }}>Upload additional documents to run full cross-verification matrix.</div>
+                  <div style={{ padding: '12px', color: '#64748b', fontSize: '13px' }}>Upload additional documents to run cross-verification.</div>
                 )}
               </div>
             </div>
@@ -986,25 +986,25 @@ export const BidderDashboard = ({ user }) => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>
-                  🛡️ Visual Forgery & ELA Analysis
+                  🛡️ Forgery & ELA Analysis
                 </h4>
                 <p style={{ fontSize: '12.5px', color: '#475569', margin: '0 0 10px 0' }}>
-                  Error Level Analysis (ELA) measures compression artifact variance across document surfaces to detect digital tampering, Photoshop splicing, and fake stamps.
+                  Error Level Analysis (ELA) detects compression variance and image tampering.
                 </p>
                 <div style={{ padding: '8px 12px', background: verificationReport.authenticity_analysis?.tamper_detected ? '#fee2e2' : '#dcfce7', borderRadius: '6px', fontSize: '12px', fontWeight: '700', color: verificationReport.authenticity_analysis?.tamper_detected ? '#b91c1c' : '#15803d' }}>
-                  {verificationReport.authenticity_analysis?.tamper_detected ? '⚠️ Tampering Anomaly Detected' : '✅ Clean: No Tampering Artifacts'}
+                  {verificationReport.authenticity_analysis?.tamper_detected ? '⚠️ Tampering Detected' : '✅ No Tampering Detected'}
                 </div>
               </div>
 
               <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>
-                  🔍 Cross-Bidder Collusion & Duplicate Hash Check
+                  🔍 Duplicate & Hash Check
                 </h4>
                 <p style={{ fontSize: '12.5px', color: '#475569', margin: '0 0 10px 0' }}>
-                  Computes cryptographic SHA-256 and perceptual dHash of all certificates across the entire GeM historical database to prevent document recycling across rival bidders.
+                  Cryptographic and perceptual hashing prevent duplicate certificate submissions.
                 </p>
                 <div style={{ padding: '8px 12px', background: verificationReport.authenticity_analysis?.duplicate_detected ? '#fee2e2' : '#dcfce7', borderRadius: '6px', fontSize: '12px', fontWeight: '700', color: verificationReport.authenticity_analysis?.duplicate_detected ? '#b91c1c' : '#15803d' }}>
-                  {verificationReport.authenticity_analysis?.duplicate_detected ? '⚠️ Duplicate Document Detected' : '✅ Unique Document Fingerprint Verified'}
+                  {verificationReport.authenticity_analysis?.duplicate_detected ? '⚠️ Duplicate Document Detected' : '✅ Unique Document Fingerprint'}
                 </div>
               </div>
             </div>
@@ -1015,7 +1015,7 @@ export const BidderDashboard = ({ user }) => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: '800', color: '#166534' }}>
-                  ✅ Positive Compliance Factors (+ Score)
+                  ✅ Positive Factors
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {verificationReport.explainable_ai?.positive_factors?.map((f, i) => (
@@ -1028,7 +1028,7 @@ export const BidderDashboard = ({ user }) => {
 
               <div>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: '800', color: '#991b1b' }}>
-                  ⚠️ Risk Factors & Penalties (- Score)
+                  ⚠️ Risk Factors
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {verificationReport.explainable_ai?.risk_factors?.length > 0 ? (
@@ -1039,7 +1039,7 @@ export const BidderDashboard = ({ user }) => {
                     ))
                   ) : (
                     <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '6px', fontSize: '12.5px', color: '#64748b' }}>
-                      No risk factors or compliance discrepancies flagged.
+                      No risk factors or discrepancies flagged.
                     </div>
                   )}
                 </div>
@@ -1064,7 +1064,7 @@ export const BidderDashboard = ({ user }) => {
             <div>
               <b>{verificationReport.decision_support?.officer_notice}</b>
               <span style={{ display: 'block', marginTop: '2px', opacity: 0.9 }}>
-                AI Model Recommendation: <b>{verificationReport.decision_support?.recommended_action}</b> based on statutory threshold alignment.
+                AI Recommendation: <b>{verificationReport.decision_support?.recommended_action}</b>
               </span>
             </div>
           </div>
@@ -1086,7 +1086,7 @@ export const BidderDashboard = ({ user }) => {
                 background: 'linear-gradient(135deg, #0a3d62 0%, #1e6091 100%)'
               }}
             >
-              {submitting ? 'Submitting Package...' : 'Submit Verified Bid Package to Officer'} <Send size={16} />
+              {submitting ? 'Submitting Package...' : 'Submit Bid Package'} <Send size={16} />
             </button>
           </div>
         </div>
@@ -1095,14 +1095,14 @@ export const BidderDashboard = ({ user }) => {
       {/* 5. Historical Submitted Bids & Officer Evaluation Decisions */}
       <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '24px', boxShadow: '0 2px 4px rgba(0,0,0,0.03)' }}>
         <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#0f172a', margin: '0 0 16px 0' }}>
-          My Submitted GeM Procurement Bids ({myBids.length})
+          My Submitted Bids ({myBids.length})
         </h3>
 
         {myBids.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '36px', color: '#64748b' }}>
             <FileCheck size={40} style={{ opacity: 0.4, marginBottom: '8px' }} />
             <p style={{ margin: 0, fontSize: '14px', fontWeight: '600' }}>No tender bids submitted yet.</p>
-            <p style={{ margin: '4px 0 0 0', fontSize: '12.5px' }}>Upload the required 7 certificates above and submit your verified bid package.</p>
+            <p style={{ margin: '4px 0 0 0', fontSize: '12.5px' }}>Upload the required documents above to submit your bid.</p>
           </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>

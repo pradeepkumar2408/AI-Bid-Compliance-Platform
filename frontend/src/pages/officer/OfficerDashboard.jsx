@@ -315,10 +315,10 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
           <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--primary-dark)', margin: 0 }}>
-            Evaluation Officer Portal
+            Officer Dashboard
           </h2>
           <p style={{ fontSize: '13px', color: '#64748b', margin: '3px 0 0 0' }}>
-            Review bidder submissions, AI compliance scores, and record evaluation decisions.
+            Review bidder submissions, verify compliance, and record decisions.
           </p>
         </div>
 
@@ -327,7 +327,7 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
             className="btn btn-primary"
             onClick={() => setShowCreateTenderModal(true)}
           >
-            <PlusCircle size={16} /> Publish New Tender
+            <PlusCircle size={16} /> Publish Tender
           </button>
           <button 
             className={`btn ${activeTab === 'evaluation' ? 'btn-primary' : 'btn-outline'}`}
@@ -339,7 +339,7 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
             className={`btn ${activeTab === 'appeals' ? 'btn-primary' : 'btn-outline'}`}
             onClick={() => setActiveTab('appeals')}
           >
-            <MessageSquare size={16} /> Grievance Queue ({pendingAppeals.length})
+            <MessageSquare size={16} /> Grievances ({pendingAppeals.length})
           </button>
           <button className="btn btn-outline" onClick={onOpenAudit}>
             <History size={16} /> Audit Trail
@@ -368,7 +368,7 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
         <div className="gem-card">
           <div className="card-header">
             <div className="card-title">
-              <MessageSquare size={20} /> Pending Bidder Grievance & Appeal Queue ({pendingAppeals.length})
+              <MessageSquare size={20} /> Pending Grievances ({pendingAppeals.length})
             </div>
           </div>
 
@@ -427,17 +427,17 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
             <div className="gem-card" style={{ textAlign: 'center', padding: '48px 24px', backgroundColor: '#f8fafc' }}>
               <FileText size={48} color="#94a3b8" style={{ margin: '0 auto 16px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', marginBottom: '8px' }}>
-                No Tenders Found in Database
+                No Tenders Found
               </h3>
               <p style={{ color: '#64748b', fontSize: '13.5px', maxWidth: '500px', margin: '0 auto 20px' }}>
-                There are currently no procurement tenders stored in the system. Click below to publish your first GeM procurement tender.
+                There are currently no tenders available. Publish a tender to begin evaluating bids.
               </p>
               <button 
                 className="btn btn-primary"
                 onClick={() => setShowCreateTenderModal(true)}
                 style={{ padding: '10px 24px', fontWeight: '700' }}
               >
-                <PlusCircle size={16} /> Publish New Tender
+                <PlusCircle size={16} /> Publish Tender
               </button>
             </div>
           ) : (
@@ -659,7 +659,7 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
         <div className="modal-backdrop" onClick={() => setShowCreateTenderModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '720px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--primary-dark)', marginBottom: '16px' }}>
-              Publish New GeM Tender & Configure Drools Eligibility Baseline
+              Publish New Tender
             </h3>
 
             <form onSubmit={handleCreateTender}>
@@ -752,10 +752,10 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
                   <div>
                     <label className="form-label" style={{ fontWeight: '800', margin: 0, color: 'var(--primary-dark)', fontSize: '13.5px' }}>
-                      Required Documents to be Provided by Bidder ({selectedRequiredDocs.length} Selected)
+                      Required Documents ({selectedRequiredDocs.length} Selected)
                     </label>
                     <span style={{ fontSize: '11.5px', color: '#64748b' }}>
-                      Only the documents checked below will be prompted and required for upload on the Bidder's portal for this tender.
+                      Select the documents bidders must provide for this tender.
                     </span>
                   </div>
                   <div style={{ display: 'flex', gap: '6px' }}>
@@ -1005,7 +1005,7 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
         <div className="modal-backdrop" onClick={() => setShowDecisionModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--primary-dark)', marginBottom: '12px' }}>
-              Binding Final Decision (Human Officer Authority)
+              Record Evaluation Decision
             </h3>
             <p style={{ fontSize: '13px', color: '#475569', marginBottom: '16px' }}>
               Evaluating Bid: <b>{selectedBidDossier.bid.bidNumber}</b> ({selectedBidDossier.bid.bidderName})
@@ -1014,15 +1014,15 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
 
             <form onSubmit={handleRecordDecision}>
               <div className="form-group">
-                <label className="form-label">Select Official Decision</label>
+                <label className="form-label">Official Decision</label>
                 <select
                   className="form-select"
                   value={decisionType}
                   onChange={(e) => setDecisionType(e.target.value)}
                 >
-                  <option value="ACCEPTED">ACCEPT BID (Award Compliance Passed)</option>
-                  <option value="REJECTED">REJECT BID (Non-Compliant)</option>
-                  <option value="REQUEST_CLARIFICATION">REQUEST CLARIFICATION</option>
+                  <option value="ACCEPTED">Accept Bid (Compliant)</option>
+                  <option value="REJECTED">Reject Bid (Non-Compliant)</option>
+                  <option value="REQUEST_CLARIFICATION">Request Clarification</option>
                 </select>
               </div>
 
@@ -1033,18 +1033,18 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
                     checked={isOverride}
                     onChange={(e) => setIsOverride(e.target.checked)}
                   />
-                  <span><b>Override AI Recommendation / Drools Score</b></span>
+                  <span><b>Override AI Recommendation</b></span>
                 </label>
               </div>
 
               <div className="form-group">
                 <label className="form-label">
-                  Mandatory Written Justification {isOverride && <span style={{ color: '#dc2626' }}>* (Required for Override)</span>}
+                  Justification {isOverride && <span style={{ color: '#dc2626' }}>* (Required for Override)</span>}
                 </label>
                 <textarea
                   className="form-textarea"
                   rows={4}
-                  placeholder="Provide legally binding written justification for government audit records..."
+                  placeholder="Provide justification for the audit trail..."
                   value={writtenJustification}
                   onChange={(e) => setWrittenJustification(e.target.value)}
                   required={isOverride}
@@ -1056,7 +1056,7 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-primary" disabled={decisionSubmitting}>
-                  {decisionSubmitting ? 'Recording...' : 'Lock Decision & Append to Audit Trail'}
+                  {decisionSubmitting ? 'Recording...' : 'Confirm Decision'}
                 </button>
               </div>
             </form>
@@ -1084,26 +1084,26 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
           <div style={{ background: 'white', borderRadius: '12px', maxWidth: '500px', width: '100%', padding: '24px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <h3 style={{ fontSize: '18px', fontWeight: '800', margin: 0, color: '#0f172a' }}>
-                Resolve Statutory Appeal #{resolvingAppealModal.appealId}
+                Resolve Appeal #{resolvingAppealModal.appealId}
               </h3>
               <button onClick={() => setResolvingAppealModal(null)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X size={18} /></button>
             </div>
             <p style={{ fontSize: '13px', color: '#64748b', margin: '0 0 16px 0' }}>
-              Set resolution status to <b style={{ color: resolvingAppealModal.status === 'APPROVED' ? '#16a34a' : '#dc2626' }}>{resolvingAppealModal.status}</b> and provide official officer notes for bidder.
+              Set status to <b style={{ color: resolvingAppealModal.status === 'APPROVED' ? '#16a34a' : '#dc2626' }}>{resolvingAppealModal.status}</b> and provide notes.
             </p>
             <div className="form-group">
-              <label className="form-label">Official Evaluation Notes</label>
+              <label className="form-label">Resolution Notes</label>
               <textarea
                 className="form-textarea"
                 rows={4}
                 value={resolvingAppealModal.notes}
                 onChange={(e) => setResolvingAppealModal({ ...resolvingAppealModal, notes: e.target.value })}
-                placeholder="Enter official resolution justification..."
+                placeholder="Enter resolution notes..."
               />
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '16px' }}>
               <button type="button" className="btn btn-outline" onClick={() => setResolvingAppealModal(null)}>Cancel</button>
-              <button type="button" className="btn btn-primary" onClick={handleConfirmResolveAppeal}>Confirm & Save Resolution</button>
+              <button type="button" className="btn btn-primary" onClick={handleConfirmResolveAppeal}>Submit Resolution</button>
             </div>
           </div>
         </div>
