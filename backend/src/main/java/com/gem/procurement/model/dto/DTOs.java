@@ -164,34 +164,4 @@ public class DTOs {
         private String status; // APPROVED, REJECTED
         private String officerResponse;
     }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class ForgotPasswordOtpRequest {
-        private String email;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class ForgotPasswordResetRequest {
-        private String email;
-        private String otp;
-        private String newPassword;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class ForgotPasswordOtpResponse {
-        private boolean success;
-        private String message;
-        private String email;
-        private String otp;
-        private boolean emailSent;
-    }
 }

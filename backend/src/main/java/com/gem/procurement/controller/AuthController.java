@@ -47,30 +47,6 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/forgot-password/send-otp")
-    public ResponseEntity<?> sendForgotPasswordOtp(@RequestBody DTOs.ForgotPasswordOtpRequest request) {
-        try {
-            DTOs.ForgotPasswordOtpResponse response = userService.sendForgotPasswordOtp(request.getEmail());
-            return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error sending OTP: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/forgot-password/verify-reset")
-    public ResponseEntity<?> verifyOtpAndResetPassword(@RequestBody DTOs.ForgotPasswordResetRequest request) {
-        try {
-            userService.verifyOtpAndResetPassword(request.getEmail(), request.getOtp(), request.getNewPassword());
-            return ResponseEntity.ok("Password has been successfully changed! You may now sign in with your new password.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error resetting password: " + e.getMessage());
-        }
-    }
-
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody DTOs.AuthRequest request) {
         try {

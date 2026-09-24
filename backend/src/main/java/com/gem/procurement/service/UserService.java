@@ -28,10 +28,11 @@ public class UserService {
         }
 
         String prefix = identifier.contains("@") ? identifier.split("@")[0] : identifier;
-        User user = userRepository.findByEmail(identifier)
+        User user = userRepository.findByEmailIgnoreCase(identifier)
                 .or(() -> userRepository.findByUsername(identifier))
+                .or(() -> userRepository.findByEmailIgnoreCaseOrUsernameIgnoreCase(identifier, identifier))
                 .or(() -> userRepository.findByUsername(prefix))
-                .or(() -> userRepository.findByEmail(prefix + "@gem.gov.in"))
+                .or(() -> userRepository.findByEmailIgnoreCase(prefix + "@gem.gov.in"))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
@@ -129,67 +130,19 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private final OtpService otpService;
-
-    public DTOs.ForgotPasswordOtpResponse sendForgotPasswordOtp(String identifier) {
-        if (identifier == null || identifier.trim().isEmpty()) {
-            throw new IllegalArgumentException("Registered official email address is required.");
-        }
-        String cleanId = identifier.trim();
-
-        User user = userRepository.findByEmail(cleanId)
-                .or(() -> userRepository.findByUsername(cleanId))
-                .orElseThrow(() -> new IllegalArgumentException("No registered account found with email '" + cleanId + "'. Please check your email or register a new account."));
-
-        OtpService.OtpGenerationResult result = otpService.generateAndSendOtp(user.getEmail());
-
-        String userMsg = result.isEmailSent()
-                ? "A 6-digit verification OTP has been dispatched to " + user.getEmail() + ". Please check your inbox/spam folder."
-                : "A 6-digit verification OTP has been generated for " + user.getEmail() + ".";
-
-        return DTOs.ForgotPasswordOtpResponse.builder()
-                .success(true)
-                .message(userMsg)
-                .email(user.getEmail())
-                .otp(result.getOtp())
-                .emailSent(result.isEmailSent())
-                .build();
-    }
-
-    public void verifyOtpAndResetPassword(String identifier, String otp, String newPassword) {
-        if (identifier == null || identifier.trim().isEmpty()) {
-            throw new IllegalArgumentException("Registered email address is required.");
-        }
-        if (otp == null || otp.trim().isEmpty()) {
-            throw new IllegalArgumentException("6-digit verification OTP is required.");
-        }
-        if (newPassword == null || newPassword.length() < 4) {
-            throw new IllegalArgumentException("New password must be at least 4 characters long.");
-        }
-
-        String cleanId = identifier.trim();
-        User user = userRepository.findByEmail(cleanId)
-                .or(() -> userRepository.findByUsername(cleanId))
-                .orElseThrow(() -> new IllegalArgumentException("No registered account found with email '" + cleanId + "'"));
-
-        boolean isValid = otpService.verifyOtp(user.getEmail(), otp.trim());
-        if (!isValid) {
-            throw new IllegalArgumentException("Invalid or expired verification OTP. Please check the code or request a new OTP.");
-        }
-
-        user.setPasswordHash(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-    }
-
     public void resetPassword(String identifier, String newPassword) {
         if (identifier == null || identifier.trim().isEmpty()) {
             throw new IllegalArgumentException("Email address is required");
         }
         String cleanId = identifier.trim();
+        String prefix = cleanId.contains("@") ? cleanId.split("@")[0] : cleanId;
 
-        User user = userRepository.findByEmail(cleanId)
+        User user = userRepository.findByEmailIgnoreCase(cleanId)
                 .or(() -> userRepository.findByUsername(cleanId))
-                .orElseThrow(() -> new IllegalArgumentException("No registered account found with email '" + cleanId + "'"));
+                .or(() -> userRepository.findByEmailIgnoreCaseOrUsernameIgnoreCase(cleanId, cleanId))
+                .or(() -> userRepository.findByUsername(prefix))
+                .or(() -> userRepository.findByEmailIgnoreCase(prefix + "@gem.gov.in"))
+                .orElseThrow(() -> new IllegalArgumentException("No registered account found with email '" + cleanId + "'. Please check the email or sign up first."));
 
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         userRepository.save(user);
