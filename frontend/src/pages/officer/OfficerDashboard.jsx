@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Award, ShieldAlert, CheckCircle, XCircle, FileText, AlertTriangle, Eye, RefreshCw, Scale, UserCheck, MessageSquare, History, PlusCircle, X, Send, Trash2, Plus } from 'lucide-react';
+import { 
+  Award, ShieldAlert, CheckCircle, XCircle, FileText, AlertTriangle, 
+  Eye, RefreshCw, Scale, UserCheck, MessageSquare, History, PlusCircle, 
+  X, Send, Trash2, Plus, CreditCard, ShieldCheck, CheckCircle2, FileCheck,
+  Calendar, Hash
+} from 'lucide-react';
 import { tenderService, officerService } from '../../services/api';
 import { RiskBadge } from '../../components/Navbar';
 import { DroolsRuleTrace } from '../../components/DroolsRuleTrace';
@@ -527,91 +532,349 @@ export const OfficerDashboard = ({ onOpenAudit, user }) => {
               ) : !selectedBidDossier ? (
                 <div className="gem-card"><p>Select a bidder from the ranking list on the left to inspect evidence.</p></div>
               ) : (
-                <div className="gem-card">
+                <div className="gem-card" style={{ padding: '24px', boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)', borderRadius: '14px', border: '1px solid #e2e8f0' }}>
                   {/* Dossier Header */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '16px', marginBottom: '18px' }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottom: '1px solid #e2e8f0',
+                    paddingBottom: '18px',
+                    marginBottom: '20px',
+                    flexWrap: 'wrap',
+                    gap: '14px'
+                  }}>
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--primary-dark)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                        <h3 style={{ fontSize: '22px', fontWeight: '800', color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
                           {selectedBidDossier.bid.bidderName}
                         </h3>
                         <RiskBadge level={selectedBidDossier.complianceScore?.riskLevel} />
+                        {selectedBidDossier.complianceScore?.totalScore !== undefined && (
+                          <span style={{
+                            fontSize: '12px',
+                            fontWeight: '800',
+                            padding: '3px 10px',
+                            borderRadius: '12px',
+                            backgroundColor: '#f0f9ff',
+                            color: '#0369a1',
+                            border: '1px solid #bae6fd'
+                          }}>
+                            Score: {selectedBidDossier.complianceScore.totalScore}%
+                          </span>
+                        )}
                       </div>
-                      <p style={{ fontSize: '12.5px', color: '#64748b', marginTop: '2px' }}>
-                        Bid Number: <b>{selectedBidDossier.bid.bidNumber}</b> | Submitted: {new Date(selectedBidDossier.bid.submissionDate).toLocaleString()}
-                      </p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '12.5px', color: '#64748b', marginTop: '6px', flexWrap: 'wrap' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Hash size={13} color="#94a3b8" />
+                          Bid: <b style={{ color: '#334155' }}>{selectedBidDossier.bid.bidNumber}</b>
+                        </span>
+                        <span style={{ color: '#cbd5e1' }}>•</span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Calendar size={13} color="#94a3b8" />
+                          Submitted: <span style={{ color: '#334155' }}>{new Date(selectedBidDossier.bid.submissionDate).toLocaleString()}</span>
+                        </span>
+                      </div>
                     </div>
 
                     <button
                       className="btn btn-primary"
                       onClick={() => setShowDecisionModal(true)}
+                      style={{
+                        padding: '10px 20px',
+                        fontSize: '13.5px',
+                        fontWeight: '700',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: 'linear-gradient(135deg, #0a3d62 0%, #1e6091 100%)',
+                        boxShadow: '0 4px 12px rgba(10, 61, 98, 0.25)',
+                        borderRadius: '8px'
+                      }}
                     >
                       <UserCheck size={16} /> Final Officer Decision
                     </button>
                   </div>
 
-                  {/* Identity Verification Panel */}
+                  {/* Identity Verification Cards */}
                   <div style={{
                     backgroundColor: '#f8fafc',
                     border: '1px solid #e2e8f0',
-                    borderRadius: 'var(--radius-sm)',
-                    padding: '14px',
-                    marginBottom: '18px'
+                    borderRadius: '12px',
+                    padding: '16px 18px',
+                    marginBottom: '22px'
                   }}>
-                    <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#334155', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <UserCheck size={16} color="var(--primary)" /> Identity Verification
-                    </h4>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', fontSize: '12px' }}>
-                      <div>
-                        <span style={{ color: '#64748b' }}>PAN Status:</span>
-                        <div><b>{selectedBidDossier.identityVerification?.panStatus || 'VALID'}</b></div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                      <h4 style={{ fontSize: '13.5px', fontWeight: '800', color: '#1e293b', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <ShieldCheck size={16} color="#0284c7" /> Identity & Registry Verification
+                      </h4>
+                      <span style={{ fontSize: '11.5px', color: '#64748b', fontWeight: '600' }}>
+                        Govt API Integration Gate
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
+                      {/* PAN Status */}
+                      <div style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        padding: '10px 12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                      }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#e0f2fe', color: '#0284c7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <CreditCard size={16} />
+                        </div>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>PAN Status</div>
+                          <div style={{
+                            fontSize: '11.5px',
+                            fontWeight: '700',
+                            color: '#15803d',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            marginTop: '1px'
+                          }}>
+                            <CheckCircle2 size={11} color="#16a34a" /> {selectedBidDossier.identityVerification?.panStatus?.replace(/_/g, ' ') || 'Active & Valid'}
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <span style={{ color: '#64748b' }}>GSTIN Status:</span>
-                        <div><b>{selectedBidDossier.identityVerification?.gstStatus || 'ACTIVE'}</b></div>
+
+                      {/* GSTIN Status */}
+                      <div style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        padding: '10px 12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                      }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#dcfce7', color: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <ShieldCheck size={16} />
+                        </div>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>GSTIN Status</div>
+                          <div style={{
+                            fontSize: '11.5px',
+                            fontWeight: '700',
+                            color: '#15803d',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            marginTop: '1px'
+                          }}>
+                            <CheckCircle2 size={11} color="#16a34a" /> {selectedBidDossier.identityVerification?.gstStatus?.replace(/_/g, ' ') || 'Active & Registered'}
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <span style={{ color: '#64748b' }}>Name Mismatch:</span>
-                        <div><b>{selectedBidDossier.identityVerification?.nameMismatchFlag ? '⚠️ MISMATCH' : '✓ MATCHED'}</b></div>
+
+                      {/* Name Match */}
+                      <div style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        padding: '10px 12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                      }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: selectedBidDossier.identityVerification?.nameMismatchFlag ? '#fef3c7' : '#f0fdf4', color: selectedBidDossier.identityVerification?.nameMismatchFlag ? '#b45309' : '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <UserCheck size={16} />
+                        </div>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Name Match</div>
+                          <div style={{
+                            fontSize: '11.5px',
+                            fontWeight: '700',
+                            color: selectedBidDossier.identityVerification?.nameMismatchFlag ? '#b45309' : '#15803d',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            marginTop: '1px'
+                          }}>
+                            {selectedBidDossier.identityVerification?.nameMismatchFlag ? (
+                              <><AlertTriangle size={11} color="#d97706" /> Mismatch</>
+                            ) : (
+                              <><CheckCircle2 size={11} color="#16a34a" /> Matched (100%)</>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <span style={{ color: '#64748b' }}>Debarment:</span>
-                        <div>
-                          <b style={{ color: selectedBidDossier.identityVerification?.isDebarred ? '#dc2626' : '#16a34a' }}>
-                            {selectedBidDossier.identityVerification?.isDebarred ? '🚨 DEBARRED' : '✓ CLEAR'}
-                          </b>
+
+                      {/* Debarment */}
+                      <div style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        padding: '10px 12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                      }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: selectedBidDossier.identityVerification?.isDebarred ? '#fee2e2' : '#f0fdf4', color: selectedBidDossier.identityVerification?.isDebarred ? '#dc2626' : '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <ShieldAlert size={16} />
+                        </div>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Debarment Check</div>
+                          <div style={{
+                            fontSize: '11.5px',
+                            fontWeight: '700',
+                            color: selectedBidDossier.identityVerification?.isDebarred ? '#dc2626' : '#15803d',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            marginTop: '1px'
+                          }}>
+                            {selectedBidDossier.identityVerification?.isDebarred ? (
+                              <><AlertTriangle size={11} color="#dc2626" /> Debarred</>
+                            ) : (
+                              <><CheckCircle2 size={11} color="#16a34a" /> Clear (No Ban)</>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Documents & Tamper Checks */}
-                  <div style={{ marginBottom: '18px' }}>
-                    <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#334155', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <FileText size={16} color="var(--primary)" /> Uploaded Documents ({selectedBidDossier.documents?.length || 0})
-                    </h4>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {/* Uploaded Documents Grid */}
+                  <div style={{ marginBottom: '22px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                      <h4 style={{ fontSize: '13.5px', fontWeight: '800', color: '#1e293b', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <FileCheck size={16} color="#0284c7" /> Uploaded Documents ({selectedBidDossier.documents?.length || 0})
+                      </h4>
+                      <span style={{ fontSize: '11.5px', color: '#64748b' }}>
+                        Click to preview document & ELA analysis
+                      </span>
+                    </div>
+
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                      gap: '10px'
+                    }}>
                       {selectedBidDossier.documents?.map((doc) => (
                         <div
                           key={doc.id}
                           onClick={() => setSelectedDocForModal(doc)}
                           style={{
-                            padding: '8px 12px',
-                            borderRadius: 'var(--radius-sm)',
-                            border: doc.isTampered ? '1px solid #fca5a5' : '1px solid #cbd5e1',
-                            backgroundColor: doc.isTampered ? '#fef2f2' : '#ffffff',
+                            padding: '11px 14px',
+                            borderRadius: '10px',
+                            border: doc.isTampered 
+                              ? '1.5px solid #fca5a5' 
+                              : doc.isDuplicate 
+                              ? '1.5px solid #fcd34d' 
+                              : '1px solid #e2e8f0',
+                            backgroundColor: doc.isTampered 
+                              ? '#fff5f5' 
+                              : doc.isDuplicate 
+                              ? '#fffdf5' 
+                              : '#ffffff',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '8px',
-                            fontSize: '12px'
+                            justifyContent: 'space-between',
+                            gap: '10px',
+                            transition: 'all 0.2s ease',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
                           }}
+                          className="hover-elevate"
                         >
-                          <FileText size={14} color={doc.isTampered ? '#dc2626' : 'var(--primary)'} />
-                          <span>{doc.filename}</span>
-                          {doc.isTampered && <span style={{ color: '#dc2626', fontWeight: '700' }}>[ELA TAMPER]</span>}
-                          {doc.isDuplicate && <span style={{ color: '#d97706', fontWeight: '700' }}>[DUPLICATE]</span>}
-                          <Eye size={13} color="#64748b" />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
+                            <div style={{
+                              width: '34px',
+                              height: '34px',
+                              borderRadius: '8px',
+                              backgroundColor: doc.isTampered ? '#fee2e2' : '#f0f9ff',
+                              color: doc.isTampered ? '#dc2626' : '#0284c7',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flexShrink: 0
+                            }}>
+                              <FileText size={16} />
+                            </div>
+
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                              <div 
+                                style={{
+                                  fontSize: '12.5px',
+                                  fontWeight: '700',
+                                  color: '#1e293b',
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis'
+                                }}
+                                title={doc.filename}
+                              >
+                                {doc.filename}
+                              </div>
+
+                              <div style={{ marginTop: '2px', display: 'flex', gap: '6px', alignItems: 'center' }}>
+                                {doc.isTampered ? (
+                                  <span style={{
+                                    fontSize: '10px',
+                                    fontWeight: '800',
+                                    color: '#b91c1c',
+                                    backgroundColor: '#fee2e2',
+                                    padding: '1px 6px',
+                                    borderRadius: '4px',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '3px'
+                                  }}>
+                                    <AlertTriangle size={10} /> ELA Tamper
+                                  </span>
+                                ) : doc.isDuplicate ? (
+                                  <span style={{
+                                    fontSize: '10px',
+                                    fontWeight: '800',
+                                    color: '#b45309',
+                                    backgroundColor: '#fef3c7',
+                                    padding: '1px 6px',
+                                    borderRadius: '4px'
+                                  }}>
+                                    Duplicate Hash
+                                  </span>
+                                ) : (
+                                  <span style={{
+                                    fontSize: '10px',
+                                    fontWeight: '800',
+                                    color: '#15803d',
+                                    backgroundColor: '#dcfce7',
+                                    padding: '1px 6px',
+                                    borderRadius: '4px',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '3px'
+                                  }}>
+                                    <CheckCircle2 size={10} /> Verified Clean
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style={{
+                            padding: '6px',
+                            borderRadius: '6px',
+                            backgroundColor: '#f8fafc',
+                            color: '#64748b',
+                            border: '1px solid #e2e8f0',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                          }}>
+                            <Eye size={13} />
+                          </div>
                         </div>
                       ))}
                     </div>
